@@ -21,12 +21,13 @@ END RAMe;
 
 ARCHITECTURE behavior OF RAMe IS
 
+  signal CS_RAMe: std_logic;
   SIGNAL contents_ram : array8_ram(63 downto 0);
-  constant reset_values : array8_ram(63 downto 0) := (others(others=>'0'));
+  constant reset_values : array8_ram(63 downto 0) := (others=>(others=>'0'));
 
 BEGIN
 
-CS_RAMe <= '1' when not (adress(7) or adress(6)) else '0';
+CS_RAMe <= '1' when (address(7) or address(6))= '0' else '0';
 
 -------------------------------------------------------------------------
 -- Memoria de prop�sito general
@@ -48,9 +49,9 @@ databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and CS_RAMe
 -------------------------------------------------------------------------
 -- Decodificador de BCD a 7 segmentos
 -------------------------------------------------------------------------
-with contents_ram(x"31")(7 downto 4) select
+with contents_ram(16#31#)(7 downto 4) select
 Temp_H <=
-   "0111111" when "0000";  -- 0
+   "0111111" when "0000",  -- 0
    "0000110" when "0001",  -- 1
    "1011011" when "0010",  -- 2
    "1001111" when "0011",  -- 3
@@ -62,9 +63,9 @@ Temp_H <=
    "1101111" when "1001",  -- 9
    "1111001" when others;  -- E (error)
 
-with contents_ram(x"31")(3 downto 0) select
+with contents_ram(16#31#)(3 downto 0) select
 Temp_L <=
-   "0111111" when "0000";  -- 0
+   "0111111" when "0000",  -- 0
    "0000110" when "0001",  -- 1
    "1011011" when "0010",  -- 2
    "1001111" when "0011",  -- 3
@@ -77,9 +78,9 @@ Temp_L <=
    "1111001" when others;  -- E (error)
 -------------------------------------------------------------------------
 
-Switches_loop : for i in 0 to 7 loop
-  Switches(i) <= contents_ram(x"10"+i)(0);
-end loop Switches_loop;
+Switches_loop : for i in 0 to 7 generate
+  Switches(i) <= contents_ram(16#10# + i)(0);
+end generate Switches_loop;
 
 END behavior;
 
