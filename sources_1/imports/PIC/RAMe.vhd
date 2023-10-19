@@ -23,7 +23,7 @@ ARCHITECTURE behavior OF RAMe IS
 
   signal CS_RAMe: std_logic;
   SIGNAL contents_ram : array8_ram(63 downto 0);
-  constant reset_values : array8_ram(63 downto 0) := (others=>(others=>'0'));
+  constant reset_values : array8_ram(63 downto 0) := (16#31# => std_logic_vector(to_unsigned(16#22#, 8)),others=>(others=>'0'));
 
 BEGIN
 
