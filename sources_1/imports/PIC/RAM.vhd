@@ -12,33 +12,64 @@ PORT (
    write_en : in    std_logic;
    oe       : in    std_logic;
    address  : in    std_logic_vector(7 downto 0);
-   databus  : inout std_logic_vector(7 downto 0));
+   databus  : inout std_logic_vector(7 downto 0);
+   Switches : out   std_logic_vector(7 downto 0);
+   Temp_H   : out   std_logic_vector(6 downto 0);
+   Temp_L   : out   std_logic_vector(6 downto 0)
+);
 END ram;
 
 ARCHITECTURE behavior OF ram IS
 
-  SIGNAL contents_ram : array8_ram(255 downto 64);
+  component RAMe
+    port(
+      Clk      : in    std_logic;
+      Reset    : in    std_logic;
+      write_en : in    std_logic;
+      oe       : in    std_logic;
+      address  : in    std_logic_vector(7 downto 0);
+      databus  : inout std_logic_vector(7 downto 0);
+      Switches : out   std_logic_vector(7 downto 0);
+      Temp_H   : out   std_logic_vector(6 downto 0);
+      Temp_L   : out   std_logic_vector(6 downto 0)
+    );
+  end component;
+
+  component RAMg
+    port(
+      Clk      : in    std_logic;
+      Reset    : in    std_logic;
+      write_en : in    std_logic;
+      oe       : in    std_logic;
+      address  : in    std_logic_vector(7 downto 0);
+      databus  : inout std_logic_vector(7 downto 0)
+    );
+  end component;
 
 BEGIN
 
+  RAM_especifica : RAMe
+  port map (
+    Clk      <= Clk      ;
+    Reset    <= Reset    ;
+    write_en <= write_en ;
+    oe       <= oe       ;
+    address  <= address  ;
+    databus  <= databus  ;
+    Switches <= Switches ; 
+    Temp_H   <= Temp_H   ;
+    Temp_L   <= Temp_L   ;
+  );
 
--------------------------------------------------------------------------
--- Decodificador de BCD a 7 segmentos
--------------------------------------------------------------------------
---with contents_ram()(7 downto 4) select
---Temp_H <=
---    "0111111" when "0000";  -- 0
---    "0000110" when "0001",  -- 1
---    "1011011" when "0010",  -- 2
---    "1001111" when "0011",  -- 3
---    "1100110" when "0100",  -- 4
---    "1101101" when "0101",  -- 5
---    "1111101" when "0110",  -- 6
---    "0000111" when "0111",  -- 7
---    "1111111" when "1000",  -- 8
---    "1101111" when "1001",  -- 9
---    "1111001" when others;  -- E (error)
--------------------------------------------------------------------------
+  RAM_generico : RAMg
+  port map (
+    Clk      <= Clk      ;
+    Reset    <= Reset    ;
+    write_en <= write_en ;
+    oe       <= oe       ;
+    address  <= address  ;
+    databus  <= databus  ;
+  );
 
 END behavior;
 

@@ -5,17 +5,21 @@ USE IEEE.numeric_std.all;
 
 USE work.PIC_pkg.all;
 
-ENTITY ramg IS
+ENTITY RAMe IS
 PORT (
    Clk      : in    std_logic;
    Reset    : in    std_logic;
    write_en : in    std_logic;
    oe       : in    std_logic;
    address  : in    std_logic_vector(7 downto 0);
-   databus  : inout std_logic_vector(7 downto 0));
-END ramg;
+   databus  : inout std_logic_vector(7 downto 0);
+   Switches : out   std_logic_vector(7 downto 0);
+   Temp_H   : out   std_logic_vector(6 downto 0);
+   Temp_L   : out   std_logic_vector(6 downto 0)
+   );
+END RAMe;
 
-ARCHITECTURE behavior OF ramg IS
+ARCHITECTURE behavior OF RAMe IS
 
   SIGNAL contents_ram : array8_ram(63 downto 0);
   constant reset_values : array8_ram(63 downto 0) := (others(others=>'0'));
@@ -44,20 +48,38 @@ databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and CS_RAMe
 -------------------------------------------------------------------------
 -- Decodificador de BCD a 7 segmentos
 -------------------------------------------------------------------------
---with contents_ram()(7 downto 4) select
---Temp_H <=
---    "0111111" when "0000";  -- 0
---    "0000110" when "0001",  -- 1
---    "1011011" when "0010",  -- 2
---    "1001111" when "0011",  -- 3
---    "1100110" when "0100",  -- 4
---    "1101101" when "0101",  -- 5
---    "1111101" when "0110",  -- 6
---    "0000111" when "0111",  -- 7
---    "1111111" when "1000",  -- 8
---    "1101111" when "1001",  -- 9
---    "1111001" when others;  -- E (error)
+with contents_ram(x"31")(7 downto 4) select
+Temp_H <=
+   "0111111" when "0000";  -- 0
+   "0000110" when "0001",  -- 1
+   "1011011" when "0010",  -- 2
+   "1001111" when "0011",  -- 3
+   "1100110" when "0100",  -- 4
+   "1101101" when "0101",  -- 5
+   "1111101" when "0110",  -- 6
+   "0000111" when "0111",  -- 7
+   "1111111" when "1000",  -- 8
+   "1101111" when "1001",  -- 9
+   "1111001" when others;  -- E (error)
+
+with contents_ram(x"31")(3 downto 0) select
+Temp_L <=
+   "0111111" when "0000";  -- 0
+   "0000110" when "0001",  -- 1
+   "1011011" when "0010",  -- 2
+   "1001111" when "0011",  -- 3
+   "1100110" when "0100",  -- 4
+   "1101101" when "0101",  -- 5
+   "1111101" when "0110",  -- 6
+   "0000111" when "0111",  -- 7
+   "1111111" when "1000",  -- 8
+   "1101111" when "1001",  -- 9
+   "1111001" when others;  -- E (error)
 -------------------------------------------------------------------------
+
+Switches_loop : for i in 0 to 7 loop
+  Switches(i) <= contents_ram(x"10"+i)(0);
+end loop Switches_loop;
 
 END behavior;
 
