@@ -50,25 +50,25 @@ BEGIN
 
   RAM_especifica : RAMe
   port map (
-    Clk      <= Clk      ;
-    Reset    <= Reset    ;
-    write_en <= write_en ;
-    oe       <= oe       ;
-    address  <= address  ;
-    databus  <= databus  ;
-    Switches <= Switches ; 
-    Temp_H   <= Temp_H   ;
-    Temp_L   <= Temp_L   ;
+    Clk      => Clk      ;
+    Reset    => Reset    ;
+    write_en => write_en ;
+    oe       => oe       ;
+    address  => address  ;
+    databus  => databus  ;
+    Switches => Switches ; 
+    Temp_H   => Temp_H   ;
+    Temp_L   => Temp_L
   );
 
   RAM_generico : RAMg
   port map (
-    Clk      <= Clk      ;
-    Reset    <= Reset    ;
-    write_en <= write_en ;
-    oe       <= oe       ;
-    address  <= address  ;
-    databus  <= databus  ;
+    Clk      => Clk      ;
+    Reset    => Reset    ;
+    write_en => write_en ;
+    oe       => oe       ;
+    address  => address  ;
+    databus  => databus
   );
 
 END behavior;
