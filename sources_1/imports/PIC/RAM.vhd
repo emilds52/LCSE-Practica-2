@@ -3,7 +3,8 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.all;
 USE IEEE.numeric_std.all;
 
-USE work.PIC_pkg.all;
+library util;
+USE util.PIC_pkg.all;
 
 ENTITY ram IS
 PORT (
@@ -38,7 +39,6 @@ ARCHITECTURE behavior OF ram IS
   component RAMg
     port(
       Clk      : in    std_logic;
-      Reset    : in    std_logic;
       write_en : in    std_logic;
       oe       : in    std_logic;
       address  : in    std_logic_vector(7 downto 0);
@@ -64,7 +64,6 @@ BEGIN
   RAM_generico : RAMg
   port map (
     Clk      => Clk      ,
-    Reset    => Reset    ,
     write_en => write_en ,
     oe       => oe       ,
     address  => address  ,

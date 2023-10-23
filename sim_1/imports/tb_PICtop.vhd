@@ -3,7 +3,9 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.all;
 USE IEEE.numeric_std.all;
 
-USE work.PIC_pkg.all;
+library util;
+USE util.PIC_pkg.all;
+USE util.RS232_test.all;
 
 entity PICtop_tb is
 end PICtop_tb;
