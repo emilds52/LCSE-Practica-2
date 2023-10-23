@@ -33,15 +33,9 @@ END DMA;
 
 ARCHITECTURE behavior OF DMA IS
 
-type state_RX_t is (idle, request, writing, request_end);
-signal current_state_RX_reg : state_RX_t;
-signal next_state_RX : state_RX_t;
---type state_RX_t is (LSB, mid, MSB);
---signal current_state_RX_reg : state_RX_t;
-
-type state_TX_t is (idle, pretransmision_1, transmision_1, pretransmision_2, transmision_2);
-signal current_state_TX_reg : state_TX_t;
-signal next_state_TX : state_TX_t;
+type state_t is (idle, request, writing, request_end, pretransmision_1, transmision_1, pretransmision_2, transmision_2);
+signal current_state_reg : state_t;
+signal next_state : state_t;
 
 signal Data_Read_reg: std_logic;
 signal Valid_D_reg: std_logic;
@@ -66,23 +60,39 @@ signal READY_tmp: std_logic;
 
 begin
 
-  Recepcion_process: process(clk, reset)
+  Recepcion_transmision_process: process(clk, reset)
   begin
     if reset = '0' then
-      --
+      Data_read_tmp <= '0';
+      Valid_D_tmp <= '1';--activa a nivel bajo
+      TX_Data_tmp <= (others => '0');
+      Address_tmp <= x"00";
+      Databus_tmp <= (others=>'Z');
+      Write_en_tmp <= '0';
+      OE_tmp <= '0';
+      DMA_RQ_tmp <= '0';
+      READY_tmp <= '0'; --procesador no ocioso
+      next_state <= idle;
+            
     elsif rising_edge(clk) then
-      case current_state_RX_reg is
-      
+      case current_state_reg is
+    
         when idle=>
-          if RX_Empty = '0' then--si memoria interna no vacía, recibe datos
+          READY <= '1';
+          Address_tmp <= x"00";
+          if Send_Comm = '1' then 
+            next_state <= transmision_1;
+            READY <= '0';
+          elsif RX_Empty = '0' then--si memoria interna no vacía, recibe datos
             --siempre vienen 3 bytes? El orden es por llegada(MSB, Int, LSB)
-            next_state_RX <= request;
+            next_state <= request;
+            READY <= '0';
           end if;
         
         when request=>
           DMA_RQ_tmp <= '1';--Petición de buses
           if DMA_ACK = '1' then
-            next_state_RX <= writing;
+            next_state <= writing;
             Write_en_tmp <= '1';
             Data_Read_tmp <= '1';
             Address_tmp <= x"00";
@@ -95,7 +105,7 @@ begin
             Databus_tmp <= RCVD_Data;
             Address_tmp <= Address_reg + 1;
             if Address_reg = x"03" then
-              next_state_RX <= request_end;
+              next_state <= request_end;
               Write_en_tmp <= '0';
               Data_Read_tmp <= '0';
               Databus_tmp <= x"FF";
@@ -103,7 +113,7 @@ begin
           else
             Address_tmp <= x"03";--si son menos de 3 bytes, solo se ocupa de 0x00 a donde llegue, se mantienen los que no llegue --Es decir, si es uno, se mantienen intermeido y LSB como estaban o se ponen a cero?
             Databus_tmp <= x"FF";
-            next_state_RX <= request_end;
+            next_state <= request_end;
             Write_en_tmp <= '0';
             Data_Read_tmp <= '0';
           end if;
@@ -111,37 +121,21 @@ begin
         when request_end=>
           DMA_RQ_tmp <= '0';
           if DMA_ACK = '0' then
-            next_state_RX <= idle;
+            next_state <= idle;
+            READY <= '1';
           end if;
-      end case;
-    end if;
-  end process;
-  
-  Transmision_process: process(Clk, Reset)
-  begin
-    if reset = '0' then
-    --
-    elsif rising_edge(clk) then
-      case current_state_TX_reg is
-        when idle=>
-          READY <= '1';
-          if Send_Comm = '1' then
-            next_state_TX <= transmision_1;
-            READY <= '0';
-            --*1
-          end if;
+            
         when pretransmision_1=>--se puede poner en *1
         --se supone TX_RDY en 1
           Valid_D_tmp <= '0';
           Address_tmp <= x"04";
           OE_tmp <= '0';--habilitación nivel bajo
-          next_state_TX <= transmision_1;
+          next_state <= transmision_1;
           
         when transmision_1=>
-          
           TX_Data_tmp <= Databus_reg;
           if ACK_out = '0' then--activa a nivel bajo, llegada a RS232
-            next_state_TX <= pretransmision_2;
+            next_state <= pretransmision_2;
             Valid_D_tmp <= '1';
             OE_tmp <= '1';
           end if;
@@ -150,12 +144,12 @@ begin
           Valid_D_tmp <= '0';
           Address_tmp <= x"05";
           OE_tmp <= '0';--habilitación nivel bajo
-          next_state_TX <= transmision_2;
+          next_state <= transmision_2;
           
         when transmision_2=>
           TX_Data_tmp <= Databus_reg;
           if ACK_out = '0' then--activa a nivel bajo, llegada a RS232
-            next_state_TX <= idle;
+            next_state <= idle;
             Valid_D <= '1';
             OE_tmp <= '1';
           end if;
@@ -175,19 +169,20 @@ begin
       OE_reg <= '0';
       DMA_RQ_reg <= '0';
       READY_reg <= '0'; --procesador no ocioso
-      current_state_RX_reg <= idle;
+      current_state_reg <= idle;
       
     elsif rising_edge(clk) then
       Data_Read_reg <= Data_Read_tmp;
       Valid_D_reg <= Valid_D_tmp;
       TX_Data_reg <= TX_Data_tmp;
       Address_reg <= Address_tmp;
-      Databus_reg <= Databus_tmp;
       Write_en_reg <= Write_en_tmp;
       OE_reg <= OE_tmp;
       DMA_RQ_reg <= DMA_RQ_tmp;
       READY_reg <= READY_tmp;
-      current_state_RX_reg <= next_state_RX;
+      current_state_reg <= next_state;
+      databus_reg <= databus_tmp;
+      
     end if;
   end process;
   
@@ -196,7 +191,9 @@ begin
   Valid_D <= Valid_D_reg;
   TX_Data <= TX_Data_reg;
   Address <= Address_reg;
-  Databus <= Databus_reg when current_state_RX_reg = writing else (others => 'Z');
+--  Databus <= Databus_reg;
+  Databus <= Databus_reg when write_en_reg='1' else (others=> 'Z'); --Sale XXX en simulación
+
   Write_en <= Write_en_reg;
   OE <= OE_reg;
   DMA_RQ <= DMA_RQ_reg;

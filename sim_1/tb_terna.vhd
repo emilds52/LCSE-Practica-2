@@ -49,7 +49,7 @@ architecture TestBench of terna_tb is
       DMA_RQ   => DMA_RQ
     );
   
------------------------------------------------------------------------------
+    -----------------------------------------------------------------------------
     -- Reset & clock generator
     -----------------------------------------------------------------------------
     
@@ -67,15 +67,26 @@ architecture TestBench of terna_tb is
     
       SEND_STUFF : process
       begin
-         RS232_RX <= '1';
-         wait for 40 us;
-         Transmit(RS232_RX, X"49");
-         wait for 40 us;
-         Transmit(RS232_RX, X"34");
-         wait for 40 us;
-         Transmit(RS232_RX, X"31");
-         wait;
+       RS232_RX <= '1';
+       wait for 40 us;
+       Transmit(RS232_RX, X"49");
+       Send <= '0';
+       wait for 10 us;
+       DMA_ACK <= '1';
+       wait for 1 us;
+       DMA_ACK <= '0';
+       wait for 40 us;
+       DMA_ACK <= '0';
+       wait for 40 us;
+       Transmit(RS232_RX, X"34");
+       wait for 40 us;
+       Transmit(RS232_RX, X"31");
+       wait for 40 us;
+       Transmit(RS232_RX, X"89");
+       DMA_ACK <= '1';
+       wait for 1 us;
+       DMA_ACK <= '0';
+       wait;
       end process SEND_STUFF;
-  
   
   end architecture;
