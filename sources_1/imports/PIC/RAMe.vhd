@@ -44,7 +44,7 @@ begin
   end if;
 end process;
 
-databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and CS_RAMe = '1' else (others => 'Z');
+databus <= contents_ram(to_integer(unsigned(address))) when oe = '1' and CS_RAMe = '1' else (others => 'Z');
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
