@@ -76,24 +76,28 @@ architecture TestBench of terna_tb is
       
       SEND_STUFF : process
       begin
-       RS232_RX <= '1';
-       wait for 40 us;
-       Send <= '0';
-       wait for 20 us;
-       Transmit(RS232_RX, X"49");
-       Transmit(RS232_RX, X"34");
-       Transmit(RS232_RX, X"31");
-       Transmit(RS232_RX, X"89");
-       wait for 20 us;
-       Send <= '1';
-       wait for 100 ns;
-       Send <= '0';
---       wait for 100 ns;
---       Send <= '1';
---       wait for 100 ns;
---       Send <= '0';
---       wait for 100 ns;
-       wait;
+        RS232_RX <= '1';
+        wait for 40 us;
+        Send <= '0';
+        wait for 20 us;
+        Transmit(RS232_RX, X"49");
+        Transmit(RS232_RX, X"34");
+        Transmit(RS232_RX, X"31");
+        Transmit(RS232_RX, X"89");
+        wait for 20 us;
+        Send <= '1';
+        wait for 100 ns;
+        Send <= '0';
+        wait for 20 us;
+        Send <= '1';
+        wait for 100 ns;
+        Send <= '0';
+        wait for 100 ns;
+        Send <= '1';
+        wait for 100 ns;
+        Send <= '0';
+        wait for 100 ns;
+        wait;
       end process SEND_STUFF;
   
   end architecture;

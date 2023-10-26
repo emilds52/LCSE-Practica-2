@@ -162,10 +162,8 @@ nbits_tmp <= nbits_t'val(to_integer(unsigned(n_bits)));
       Ack_in    <= '1';
     elsif rising_edge(Clk) then  -- rising edge of the clock
       LineRD_in <= RD;
-      if Data_read = '1' then
-          Data_FF <= Data_in;
-      end if;
       if Valid_D = '0' and TX_RDY_i = '1' then
+        Data_FF <= Data_in;
         Ack_in  <= '0';
         StartTX <= '1';
       else
