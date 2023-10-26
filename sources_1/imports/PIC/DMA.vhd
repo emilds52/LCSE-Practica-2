@@ -105,19 +105,14 @@ begin
         when writing=>        
           --Data_Read_reg <= '1';--hay que hacerla un ciclo antes para haber recibido el byte
           --Write_en_reg <= '1';--hay que hacerlo un ciclo antes
-          if RX_Empty = '0' and byte_count_reg < 3 then --x"03"
-            databus_reg <= RCVD_Data;
-            Address_reg <= byte_count_reg;
-            byte_count_reg <= byte_count_reg + 1;
-          end if;
-          if byte_count_reg = x"03" then
+          if byte_count_reg = 3 then
             current_state_reg <= write_FF;
             Address_reg <= byte_count_reg;
             byte_count_reg <= (others=>'0');
             Data_Read_reg <= '0';
             databus_reg <= x"FF";
           end if;
-          if RX_Empty = '1' and byte_count_reg < 3 then 
+          if byte_count_reg < 3 then 
             Address_reg <= (others=>'0');
             current_state_reg <= request_end;
             Write_en_reg <= '0';
