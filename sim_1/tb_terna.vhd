@@ -31,8 +31,8 @@ architecture TestBench of terna_tb is
   signal RS232_RX : std_logic;
   signal RS232_TX : std_logic;
   signal DMA_RQ   : std_logic;
-  signal DMA_ACK  : std_logic;
-  signal Send     : std_logic;
+  signal DMA_ACK  : std_logic := '0';
+  signal Send     : std_logic := '0';
   signal READY    : std_logic;
   
   begin

@@ -51,7 +51,7 @@ signal Data_Read_reg: std_logic;
 signal Valid_D_reg: std_logic;
 signal TX_Data_reg: std_logic_vector(7 downto 0);
 signal Address_reg: unsigned(2 downto 0); --solo se utiliza hasta x"05"
-signal byte_count: unsigned(2 downto 0); --solo se utiliza hasta x"03"
+signal byte_count_reg: unsigned(2 downto 0); --solo se utiliza hasta x"03"
                                                 
 signal Databus_reg: std_logic_vector(7 downto 0);
 signal Write_en_reg: std_logic;
@@ -74,6 +74,7 @@ begin
       DMA_RQ_reg <= '0';
       READY_reg <= '1'; --procesador no ocioso
       current_state_reg <= idle;
+      byte_count_reg <= (others => '0');
             
     elsif rising_edge(clk) then
       case current_state_reg is
@@ -96,27 +97,27 @@ begin
             current_state_reg <= writing;
             Write_en_reg <= '1';
             Data_Read_reg <= '1';
-            Address_reg <= byte_count;
+            Address_reg <= byte_count_reg;
             Databus_reg <= RCVD_Data;
-            byte_count <= byte_count + 1;
+            byte_count_reg <= byte_count_reg + 1;
           end if;
         
         when writing=>        
           --Data_Read_reg <= '1';--hay que hacerla un ciclo antes para haber recibido el byte
           --Write_en_reg <= '1';--hay que hacerlo un ciclo antes
-          if RX_Empty = '0' and byte_count < 3 then --x"03"
+          if RX_Empty = '0' and byte_count_reg < 3 then --x"03"
             databus_reg <= RCVD_Data;
-            Address_reg <= byte_count;
-            byte_count <= byte_count + 1;
+            Address_reg <= byte_count_reg;
+            byte_count_reg <= byte_count_reg + 1;
           end if;
-          if byte_count = x"03" then
+          if byte_count_reg = x"03" then
             current_state_reg <= write_FF;
-            Address_reg <= byte_count;
-            byte_count <= (others=>'0');
+            Address_reg <= byte_count_reg;
+            byte_count_reg <= (others=>'0');
             Data_Read_reg <= '0';
             databus_reg <= x"FF";
           end if;
-          if RX_Empty = '1' and byte_count < 3 then 
+          if RX_Empty = '1' and byte_count_reg < 3 then 
             Address_reg <= (others=>'0');
             current_state_reg <= request_end;
             Write_en_reg <= '0';
