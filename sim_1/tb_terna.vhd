@@ -54,7 +54,7 @@ architecture TestBench of terna_tb is
     -----------------------------------------------------------------------------
     
       Reset <= '0', '1' after 75 ns;
-    
+      
       p_clk : PROCESS
       BEGIN
          clk <= '1', '0' after 25 ns;
@@ -68,11 +68,9 @@ architecture TestBench of terna_tb is
       ack_process: process(DMA_RQ)
       begin
         if (DMA_RQ = '1') then
-          DMA_ACK <= '1';
-          wait for 20 ns;
+          DMA_ACK <= '1' after 100 ns;
         elsif DMA_RQ = '0' then
-          DMA_ACK <= '1';
-          wait for 20 ns;
+          DMA_ACK <= '0' after 100 ns;
         end if;
       end process;
       
@@ -80,11 +78,14 @@ architecture TestBench of terna_tb is
       begin
        RS232_RX <= '1';
        wait for 40 us;
+       Send <= '0';
+       wait for 20 us;
        Transmit(RS232_RX, X"49");
        Transmit(RS232_RX, X"34");
        Transmit(RS232_RX, X"31");
        Transmit(RS232_RX, X"89");
-      
+       wait for 20 us;
+       Send <= '1';
        wait;
       end process SEND_STUFF;
   

@@ -146,7 +146,7 @@ begin
           
         when pretransmision_2=>--se puede poner antes
           Valid_D_reg <= '0';
-          TX_Data <= Databus;
+          TX_Data_reg <= Databus;
           --OE_reg <= '0'; -- se puede poner aquí
           current_state_reg <= transmision_2;
           
