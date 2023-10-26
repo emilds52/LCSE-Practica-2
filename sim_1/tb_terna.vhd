@@ -86,6 +86,13 @@ architecture TestBench of terna_tb is
        Transmit(RS232_RX, X"89");
        wait for 20 us;
        Send <= '1';
+       wait for 100 ns;
+       Send <= '0';
+--       wait for 100 ns;
+--       Send <= '1';
+--       wait for 100 ns;
+--       Send <= '0';
+--       wait for 100 ns;
        wait;
       end process SEND_STUFF;
   

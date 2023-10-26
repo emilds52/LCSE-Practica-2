@@ -42,7 +42,8 @@ type state_t is (
   pretransmision_1,
   transmision_1,
   pretransmision_2,
-  transmision_2
+  transmision_2,
+  transmision_end
 );
 
 signal current_state_reg : state_t;
@@ -152,10 +153,16 @@ begin
           
         when transmision_2=>
           if ACK_out = '0' then--activa a nivel bajo, llegada a RS232
-            current_state_reg <= idle;
             Address_reg <= (others=>'0');
             Valid_D_reg <= '1';
             OE_reg <= '0';
+            READY_reg <= '1';
+            current_state_reg <= transmision_end;
+          end if;
+          
+        when transmision_end=>
+          if Send_comm = '0' then
+            current_state_reg <= idle;
           end if;
       end case;
     end if;
