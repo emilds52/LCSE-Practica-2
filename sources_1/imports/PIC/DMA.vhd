@@ -66,7 +66,7 @@ begin
       Valid_D_reg <= '1';--activa a nivel bajo
       TX_Data_reg <= (others => '0');
       Address_reg <= x"00";
-      databus_reg <= (others=>'Z');
+      databus_reg <= (others=> '0');
       Write_en_reg <= '0';
       OE_reg <= '0';
       DMA_RQ_reg <= '0';
@@ -80,7 +80,7 @@ begin
           READY_reg <= '1';
           Address_reg <= x"00";
           if Send_Comm = '1' then 
-            current_state_reg <= transmision_1;
+            current_state_reg <= pretransmision_1;
             READY_reg <= '0';
           elsif RX_Empty = '0' then--si memoria interna no vac�a, recibe datos
             --siempre vienen 3 bytes? El orden es por llegada(MSB, Int, LSB)
