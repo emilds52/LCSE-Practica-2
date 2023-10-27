@@ -42,8 +42,7 @@ type state_t is (
   pretransmision_1,
   transmision_1,
   pretransmision_2,
-  transmision_2,
-  transmision_end
+  transmision_2
 );
 
 signal current_state_reg : state_t;
@@ -81,14 +80,13 @@ begin
       case current_state_reg is
     
         when idle=>
-          READY_reg <= '1'; -- se puede omitir
-          if Send_Comm = '1' then 
+          READY_reg <= '1';
+          if Send_Comm = '1' and RX_Full = '0' then 
             current_state_reg <= pretransmision_1;
             READY_reg <= '0';
             OE_reg <= '1';
             Address_reg <= to_unsigned(4, Address_reg'length);
-          elsif RX_Empty = '0' and Send_Comm = '0' then--si memoria interna no vacï¿½a, recibe datos
-            --siempre vienen 3 bytes? El orden es por llegada(MSB, Int, LSB)
+          elsif RX_Empty = '0' and Send_Comm = '0' then--si memoria interna no vacï¿½a, recibe datos --El orden es por llegada(MSB, Int, LSB)
             current_state_reg <= request;
             DMA_RQ_reg <= '1';
           end if;
@@ -104,8 +102,6 @@ begin
           end if;
         
         when writing=>        
-          --Data_Read_reg <= '1';--hay que hacerla un ciclo antes para haber recibido el byte
-          --Write_en_reg <= '1';--hay que hacerlo un ciclo antes
           if byte_count_reg = 3 then
             current_state_reg <= write_FF;
             Address_reg <= byte_count_reg;
@@ -132,36 +128,34 @@ begin
             current_state_reg <= idle;
           end if;
             
-        when pretransmision_1=>--se puede poner en *1
-        --se supone TX_RDY en 1
+        when pretransmision_1=>
           Valid_D_reg <= '0';
           TX_Data_reg <= Databus;
-          current_state_reg <= transmision_1;
+          if ACK_out = '0' and TX_RDY = '0' then--cuando se recibe el dato en RS232 (ACK_out) y se está enviando el dato(TX_RDY)
+            current_state_reg <= transmision_1;
+          end if;
           
         when transmision_1=>
-          if ACK_out = '0' then--activa a nivel bajo, llegada a RS232
+          Valid_D_reg <= '1';
+          if TX_RDY = '1' then--pulso positivo al enviar el dato completo
             current_state_reg <= pretransmision_2;
-            Valid_D_reg <= '1';
             Address_reg <= to_unsigned(5, Address_reg'length);
           end if;
           
-        when pretransmision_2=>--se puede poner antes
+        when pretransmision_2=>
+          --OE_reg <= '0'; -- se puede poner aquí
           Valid_D_reg <= '0';
           TX_Data_reg <= Databus;
-          --OE_reg <= '0'; -- se puede poner aquí
-          current_state_reg <= transmision_2;
-          
-        when transmision_2=>
-          if ACK_out = '0' then--activa a nivel bajo, llegada a RS232
-            Address_reg <= (others=>'0');
-            Valid_D_reg <= '1';
-            OE_reg <= '0';
-            READY_reg <= '1';
-            current_state_reg <= transmision_end;
+          if ACK_out = '0' and TX_RDY = '0' then--cuando se recibe el dato en RS232 (ACK_out) y se está enviando el dato(TX_RDY)
+            current_state_reg <= transmision_2;
           end if;
           
-        when transmision_end=>
-          if Send_comm = '0' then
+        when transmision_2=>
+          Valid_D_reg <= '1';
+          OE_reg <= '0';
+          READY_reg <= '1';
+          if TX_RDY = '1' then--pulso positivo al enviar el dato completo
+            Address_reg <= (others=>'0');
             current_state_reg <= idle;
           end if;
       end case;
@@ -175,7 +169,7 @@ begin
   TX_Data <= TX_Data_reg;
   Address <= "00000" & std_logic_vector(Address_reg);
 --  Databus <= Databus_reg;
-  Databus <= Databus_reg when write_en_reg='1' else (others=> 'Z'); --Sale XXX en simulaciï¿½n
+  Databus <= Databus_reg when write_en_reg='1' else (others=> 'Z');
 
   Write_en <= Write_en_reg;
   OE <= OE_reg;
