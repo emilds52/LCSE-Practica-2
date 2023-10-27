@@ -24,7 +24,7 @@ ARCHITECTURE behavior OF RAMe IS
 
   signal CS_RAMe: std_logic;
   SIGNAL contents_ram : array8_ram(63 downto 0);
-  constant reset_values : array8_ram(63 downto 0) := (16#31# => std_logic_vector(to_unsigned(16#22#, 8)), 16#4# => std_logic_vector(to_unsigned(16#AA#, 8)),16#5#=> std_logic_vector(to_unsigned(16#00#, 8)), others=>(others=>'0'));--(!!) testbench
+  constant reset_values : array8_ram(63 downto 0) := (16#31# => std_logic_vector(to_unsigned(16#22#, 8)), 16#4# => std_logic_vector(to_unsigned(16#AA#, 8)),16#5#=> std_logic_vector(to_unsigned(16#11#, 8)), others=>(others=>'0'));--(!!) testbench
 
 BEGIN
 
@@ -33,7 +33,7 @@ CS_RAMe <= '1' when (address(7) or address(6))= '0' else '0';
 -------------------------------------------------------------------------
 -- Memoria de prop�sito general
 -------------------------------------------------------------------------
-p_ram : process (clk)  -- no reset
+p_ram : process (clk, reset)  -- no reset
 begin
   if Reset = '0' then
     contents_ram <= reset_values;

@@ -42,8 +42,7 @@ type state_t is (
   pretransmision_1,
   transmision_1,
   pretransmision_2,
-  transmision_2,
-  transmision_end
+  transmision_2
 );
 
 signal current_state_reg : state_t;
@@ -82,7 +81,7 @@ begin
     
         when idle=>
           READY_reg <= '1';
-          if Send_Comm = '1' then 
+          if Send_Comm = '1' and RX_Full = '0' then 
             current_state_reg <= pretransmision_1;
             READY_reg <= '0';
             OE_reg <= '1';
@@ -132,14 +131,14 @@ begin
         when pretransmision_1=>
           Valid_D_reg <= '0';
           TX_Data_reg <= Databus;
-          if ACK_out ='0' and TX_RDY = '0' then--cuando se recibe el dato en RS232 (ACK_out) y se está enviando el dato(TX_RDY)
+          if ACK_out = '0' and TX_RDY = '0' then--cuando se recibe el dato en RS232 (ACK_out) y se está enviando el dato(TX_RDY)
             current_state_reg <= transmision_1;
           end if;
           
         when transmision_1=>
+          Valid_D_reg <= '1';
           if TX_RDY = '1' then--pulso positivo al enviar el dato completo
             current_state_reg <= pretransmision_2;
-            Valid_D_reg <= '1';
             Address_reg <= to_unsigned(5, Address_reg'length);
           end if;
           
@@ -147,21 +146,18 @@ begin
           --OE_reg <= '0'; -- se puede poner aquí
           Valid_D_reg <= '0';
           TX_Data_reg <= Databus;
-          if ACK_out ='0' and TX_RDY = '0' then--cuando se recibe el dato en RS232 (ACK_out) y se está enviando el dato(TX_RDY)
+          if ACK_out = '0' and TX_RDY = '0' then--cuando se recibe el dato en RS232 (ACK_out) y se está enviando el dato(TX_RDY)
             current_state_reg <= transmision_2;
           end if;
           
         when transmision_2=>
+          Valid_D_reg <= '1';
+          OE_reg <= '0';
+          READY_reg <= '1';
           if TX_RDY = '1' then--pulso positivo al enviar el dato completo
             Address_reg <= (others=>'0');
-            Valid_D_reg <= '1';
-            OE_reg <= '0';
-            READY_reg <= '1';
             current_state_reg <= idle;
           end if;
-          
-        when transmision_end=>
-          current_state_reg <= idle;
       end case;
     end if;
   end process;
