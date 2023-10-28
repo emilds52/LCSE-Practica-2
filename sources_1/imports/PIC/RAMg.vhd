@@ -10,7 +10,7 @@ ENTITY ramg IS
 PORT (
    Clk      : in    std_logic;
    write_en : in    std_logic;
-   oe       : in    std_logic;
+   oe       : in    std_logic; -- activo a nivel bajo
    address  : in    std_logic_vector(7 downto 0);
    databus  : inout std_logic_vector(7 downto 0));
 END ramg;
@@ -36,7 +36,7 @@ begin
   end if;
 end process;
 
-databus <= contents_ram(to_integer(unsigned(address))) when oe = '1' and CS_RAMg = '1' else (others => 'Z');
+databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and CS_RAMg = '1' else (others => 'Z');
 
 END behavior;
 

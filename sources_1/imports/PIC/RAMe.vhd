@@ -11,7 +11,7 @@ PORT (
    Clk      : in    std_logic;
    Reset    : in    std_logic;
    write_en : in    std_logic;
-   oe       : in    std_logic;
+   oe       : in    std_logic; -- activo a nivel bajo
    address  : in    std_logic_vector(7 downto 0);
    databus  : inout std_logic_vector(7 downto 0);
    Switches : out   std_logic_vector(7 downto 0);
@@ -24,7 +24,7 @@ ARCHITECTURE behavior OF RAMe IS
 
   signal CS_RAMe: std_logic;
   SIGNAL contents_ram : array8_ram(63 downto 0);
-  constant reset_values : array8_ram(63 downto 0) := (16#31# => std_logic_vector(to_unsigned(16#22#, 8)), 16#4# => std_logic_vector(to_unsigned(16#AA#, 8)),16#5#=> std_logic_vector(to_unsigned(16#11#, 8)), others=>(others=>'0'));--(!!) testbench
+  constant reset_values : array8_ram(63 downto 0) := (16#31# => std_logic_vector(to_unsigned(16#22#, 8)), others=>(others=>'0'));--(!!) testbench
 
 BEGIN
 
@@ -44,7 +44,7 @@ begin
   end if;
 end process;
 
-databus <= contents_ram(to_integer(unsigned(address))) when oe = '1' and CS_RAMe = '1' else (others => 'Z');
+databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and CS_RAMe = '1' else (others => 'Z');
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
