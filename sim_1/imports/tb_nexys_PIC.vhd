@@ -15,8 +15,8 @@ architecture Testbench of TB_nexys_PIC is
 	JA 				: inout STD_LOGIC_VECTOR(2 downto 1);    
 	
     --Interfaz USB-RS232
---    UART_TXD_IN     : in  STD_LOGIC;
---    UART_RXD_OUT    : out  STD_LOGIC;
+    UART_TXD_IN     : in  STD_LOGIC;
+    UART_RXD_OUT    : out  STD_LOGIC;
 --    UART_CTS        : in  STD_LOGIC;
 --    UART_RTS        : in  STD_LOGIC;
 
@@ -69,6 +69,9 @@ architecture Testbench of TB_nexys_PIC is
 -- Time constants
   constant Tclk: time := 10 ns;   -- Clock Period (100 MHz)  
   constant Tclk2: time := 50 ns;  -- Clock Period (20 MHz)
+  
+  signal UART_TXD_IN:std_logic;
+  signal UART_RXD_OUT: std_logic;
 
 begin
 
@@ -92,6 +95,8 @@ begin
     BTNL => BTNL,   
     BTNR => BTNR,   
 --    BTND => BTND,   
+  UART_RXD_OUT=> UART_RXD_OUT,
+  UART_TXD_IN=>UART_TXD_IN,
 
     SW => SW,
     LED => LED,
@@ -134,8 +139,8 @@ begin
      RD <= TD;      -- RS232 test loop  =>  *** THIS LINE CONNECTS THE 'TD' SERIAL OUTPUT TO THE 'RD' SERIAL INPUT ***  
 
 -- 3b.Conexión de las lineas TD y RD PC mediante el puerto microUSB (puerto serie RS232)
---     TD <= UART_RXD_OUT;
---     UART_TXD_IN <= RD;
+     TD <= UART_RXD_OUT;
+     UART_TXD_IN <= RD;
 
  
 ----------------------------------------------------------
