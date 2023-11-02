@@ -16,8 +16,8 @@ entity nexys_PIC is
     --Interfaz USB-RS232
     UART_TXD_IN     : in  STD_LOGIC;
     UART_RXD_OUT    : out  STD_LOGIC;
---    UART_CTS        : in  STD_LOGIC;
---    UART_RTS        : in  STD_LOGIC;
+    UART_CTS        : in  STD_LOGIC;
+    UART_RTS        : in  STD_LOGIC;
 
 ---------------------------------------------------------------------------------------
 	-- Displays 7 segmentos (x8)
