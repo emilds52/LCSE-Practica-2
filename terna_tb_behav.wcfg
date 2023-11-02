@@ -3,160 +3,258 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="PICtop_tb_behav.wdb" id="1">
+      <db_ref path="TB_nexys_PIC_behav.wdb" id="1">
          <top_modules>
-            <top_module name="PICtop_tb" />
+            <top_module name="TB_nexys_PIC" />
             <top_module name="pic_pkg" />
-            <top_module name="rs232_test" />
             <top_module name="utility" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="1201000000000fs"></ZoomEndTime>
-      <Cursor1Time time="381550000000fs"></Cursor1Time>
+      <ZoomEndTime time="600000000001fs"></ZoomEndTime>
+      <Cursor1Time time="278705637000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="224"></NameColumnWidth>
+      <NameColumnWidth column_width="220"></NameColumnWidth>
       <ValueColumnWidth column_width="58"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="28" />
-   <wvobject type="divider" fp_name="divider47">
-      <obj_property name="label">DMA</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Clk" type="logic">
+   <WVObjectSize size="59" />
+   <wvobject fp_name="/TB_nexys_PIC/Clk" type="logic">
       <obj_property name="ElementShortName">Clk</obj_property>
       <obj_property name="ObjectShortName">Clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Reset" type="logic">
-      <obj_property name="ElementShortName">Reset</obj_property>
-      <obj_property name="ObjectShortName">Reset</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/i_write_en" type="logic">
+      <obj_property name="ElementShortName">i_write_en</obj_property>
+      <obj_property name="ObjectShortName">i_write_en</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/RCVD_Data" type="array">
-      <obj_property name="ElementShortName">RCVD_Data[7:0]</obj_property>
-      <obj_property name="ObjectShortName">RCVD_Data[7:0]</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/i_oe" type="logic">
+      <obj_property name="ElementShortName">i_oe</obj_property>
+      <obj_property name="ObjectShortName">i_oe</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/RX_Full" type="logic">
-      <obj_property name="ElementShortName">RX_Full</obj_property>
-      <obj_property name="ObjectShortName">RX_Full</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/i_send" type="logic">
+      <obj_property name="ElementShortName">i_send</obj_property>
+      <obj_property name="ObjectShortName">i_send</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/RX_Empty" type="logic">
-      <obj_property name="ElementShortName">RX_Empty</obj_property>
-      <obj_property name="ObjectShortName">RX_Empty</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/BTNC" type="logic">
+      <obj_property name="ElementShortName">BTNC</obj_property>
+      <obj_property name="ObjectShortName">BTNC</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Data_Read" type="logic">
-      <obj_property name="ElementShortName">Data_Read</obj_property>
-      <obj_property name="ObjectShortName">Data_Read</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/BTNU" type="logic">
+      <obj_property name="ElementShortName">BTNU</obj_property>
+      <obj_property name="ObjectShortName">BTNU</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/ACK_out" type="logic">
-      <obj_property name="ElementShortName">ACK_out</obj_property>
-      <obj_property name="ObjectShortName">ACK_out</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/BTNL" type="logic">
+      <obj_property name="ElementShortName">BTNL</obj_property>
+      <obj_property name="ObjectShortName">BTNL</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/TX_RDY" type="logic">
-      <obj_property name="ElementShortName">TX_RDY</obj_property>
-      <obj_property name="ObjectShortName">TX_RDY</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/BTNR" type="logic">
+      <obj_property name="ElementShortName">BTNR</obj_property>
+      <obj_property name="ObjectShortName">BTNR</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Valid_D" type="logic">
-      <obj_property name="ElementShortName">Valid_D</obj_property>
-      <obj_property name="ObjectShortName">Valid_D</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/i_address" type="array">
+      <obj_property name="ElementShortName">i_address[7:0]</obj_property>
+      <obj_property name="ObjectShortName">i_address[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/TX_Data" type="array">
-      <obj_property name="ElementShortName">TX_Data[7:0]</obj_property>
-      <obj_property name="ObjectShortName">TX_Data[7:0]</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/i_data_in" type="array">
+      <obj_property name="ElementShortName">i_data_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">i_data_in[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Databus" type="array">
-      <obj_property name="ElementShortName">Databus[7:0]</obj_property>
-      <obj_property name="ObjectShortName">Databus[7:0]</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/i_data_out" type="array">
+      <obj_property name="ElementShortName">i_data_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">i_data_out[7:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Write_en" type="logic">
-      <obj_property name="ElementShortName">Write_en</obj_property>
-      <obj_property name="ObjectShortName">Write_en</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/OE" type="logic">
-      <obj_property name="ElementShortName">OE</obj_property>
-      <obj_property name="ObjectShortName">OE</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/DMA_RQ" type="logic">
-      <obj_property name="ElementShortName">DMA_RQ</obj_property>
-      <obj_property name="ObjectShortName">DMA_RQ</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/DMA_ACK" type="logic">
-      <obj_property name="ElementShortName">DMA_ACK</obj_property>
-      <obj_property name="ObjectShortName">DMA_ACK</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Send_comm" type="logic">
-      <obj_property name="ElementShortName">Send_comm</obj_property>
-      <obj_property name="ObjectShortName">Send_comm</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/READY" type="logic">
-      <obj_property name="ElementShortName">READY</obj_property>
-      <obj_property name="ObjectShortName">READY</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/current_state_reg" type="other">
-      <obj_property name="ElementShortName">current_state_reg</obj_property>
-      <obj_property name="ObjectShortName">current_state_reg</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/Address_reg" type="array">
-      <obj_property name="ElementShortName">Address_reg[2:0]</obj_property>
-      <obj_property name="ObjectShortName">Address_reg[2:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/DMA_PHY/byte_count_reg" type="array">
-      <obj_property name="ElementShortName">byte_count_reg[2:0]</obj_property>
-      <obj_property name="ObjectShortName">byte_count_reg[2:0]</obj_property>
-   </wvobject>
-   <wvobject type="divider" fp_name="divider219">
-      <obj_property name="label">RS232</obj_property>
+   <wvobject type="divider" fp_name="divider538">
+      <obj_property name="label">top</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/RS232_RX" type="logic">
-      <obj_property name="ElementShortName">RS232_RX</obj_property>
-      <obj_property name="ObjectShortName">RS232_RX</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/BTNC" type="logic">
+      <obj_property name="ElementShortName">BTNC</obj_property>
+      <obj_property name="ObjectShortName">BTNC</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/RS232_TX" type="logic">
-      <obj_property name="ElementShortName">RS232_TX</obj_property>
-      <obj_property name="ObjectShortName">RS232_TX</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/BTNU" type="logic">
+      <obj_property name="ElementShortName">BTNU</obj_property>
+      <obj_property name="ObjectShortName">BTNU</obj_property>
    </wvobject>
-   <wvobject type="divider" fp_name="divider62">
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/BTNL" type="logic">
+      <obj_property name="ElementShortName">BTNL</obj_property>
+      <obj_property name="ObjectShortName">BTNL</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/BTNR" type="logic">
+      <obj_property name="ElementShortName">BTNR</obj_property>
+      <obj_property name="ObjectShortName">BTNR</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/databus" type="array">
+      <obj_property name="ElementShortName">databus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/i_write_en" type="logic">
+      <obj_property name="ElementShortName">i_write_en</obj_property>
+      <obj_property name="ObjectShortName">i_write_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/i_oe" type="logic">
+      <obj_property name="ElementShortName">i_oe</obj_property>
+      <obj_property name="ObjectShortName">i_oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/i_send" type="logic">
+      <obj_property name="ElementShortName">i_send</obj_property>
+      <obj_property name="ObjectShortName">i_send</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/i_send_r" type="logic">
+      <obj_property name="ElementShortName">i_send_r</obj_property>
+      <obj_property name="ObjectShortName">i_send_r</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/i_send_pulse" type="logic">
+      <obj_property name="ElementShortName">i_send_pulse</obj_property>
+      <obj_property name="ObjectShortName">i_send_pulse</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider552">
+      <obj_property name="label">pic</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/i_oe" type="logic">
+      <obj_property name="ElementShortName">i_oe</obj_property>
+      <obj_property name="ObjectShortName">i_oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/i_write_en" type="logic">
+      <obj_property name="ElementShortName">i_write_en</obj_property>
+      <obj_property name="ObjectShortName">i_write_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/i_send" type="logic">
+      <obj_property name="ElementShortName">i_send</obj_property>
+      <obj_property name="ObjectShortName">i_send</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider577">
       <obj_property name="label">RAM</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="group64" type="group">
-      <obj_property name="label">contents</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/oe" type="logic">
+      <obj_property name="ElementShortName">oe</obj_property>
+      <obj_property name="ObjectShortName">oe</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/write_en" type="logic">
+      <obj_property name="ElementShortName">write_en</obj_property>
+      <obj_property name="ObjectShortName">write_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/RAM_especifica/contents_ram[4]" type="array">
+      <obj_property name="ElementShortName">[4][7:0]</obj_property>
+      <obj_property name="ObjectShortName">[4][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/RAM_especifica/contents_ram[5]" type="array">
+      <obj_property name="ElementShortName">[5][7:0]</obj_property>
+      <obj_property name="ObjectShortName">[5][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/RAM_especifica/contents_ram[3]" type="array">
+      <obj_property name="ElementShortName">[3][7:0]</obj_property>
+      <obj_property name="ObjectShortName">[3][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/RAM_especifica/contents_ram[2]" type="array">
+      <obj_property name="ElementShortName">[2][7:0]</obj_property>
+      <obj_property name="ObjectShortName">[2][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/RAM_especifica/contents_ram[1]" type="array">
+      <obj_property name="ElementShortName">[1][7:0]</obj_property>
+      <obj_property name="ObjectShortName">[1][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RAM_PHY/RAM_especifica/contents_ram[0]" type="array">
+      <obj_property name="ElementShortName">[0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">[0][7:0]</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider553">
+      <obj_property name="label">DMA</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-      <wvobject fp_name="/PICtop_tb/UUT/RAM_PHY/RAM_especifica/contents_ram[0]" type="array">
-         <obj_property name="ElementShortName">[0][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[0][7:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/PICtop_tb/UUT/RAM_PHY/RAM_especifica/contents_ram[1]" type="array">
-         <obj_property name="ElementShortName">[1][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[1][7:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/PICtop_tb/UUT/RAM_PHY/RAM_especifica/contents_ram[2]" type="array">
-         <obj_property name="ElementShortName">[2][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[2][7:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/PICtop_tb/UUT/RAM_PHY/RAM_especifica/contents_ram[3]" type="array">
-         <obj_property name="ElementShortName">[3][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[3][7:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/PICtop_tb/UUT/RAM_PHY/RAM_especifica/contents_ram[4]" type="array">
-         <obj_property name="ElementShortName">[4][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[4][7:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="/PICtop_tb/UUT/RAM_PHY/RAM_especifica/contents_ram[5]" type="array">
-         <obj_property name="ElementShortName">[5][7:0]</obj_property>
-         <obj_property name="ObjectShortName">[5][7:0]</obj_property>
-      </wvobject>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/Temp_L" type="array">
-      <obj_property name="ElementShortName">Temp_L[6:0]</obj_property>
-      <obj_property name="ObjectShortName">Temp_L[6:0]</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/OE" type="logic">
+      <obj_property name="ElementShortName">OE</obj_property>
+      <obj_property name="ObjectShortName">OE</obj_property>
    </wvobject>
-   <wvobject fp_name="/PICtop_tb/UUT/Temp_H" type="array">
-      <obj_property name="ElementShortName">Temp_H[6:0]</obj_property>
-      <obj_property name="ObjectShortName">Temp_H[6:0]</obj_property>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Write_en" type="logic">
+      <obj_property name="ElementShortName">Write_en</obj_property>
+      <obj_property name="ObjectShortName">Write_en</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/current_state_reg" type="other">
+      <obj_property name="ElementShortName">current_state_reg</obj_property>
+      <obj_property name="ObjectShortName">current_state_reg</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/RCVD_Data" type="array">
+      <obj_property name="ElementShortName">RCVD_Data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">RCVD_Data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/RX_Full" type="logic">
+      <obj_property name="ElementShortName">RX_Full</obj_property>
+      <obj_property name="ObjectShortName">RX_Full</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/RX_Empty" type="logic">
+      <obj_property name="ElementShortName">RX_Empty</obj_property>
+      <obj_property name="ObjectShortName">RX_Empty</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Data_Read" type="logic">
+      <obj_property name="ElementShortName">Data_Read</obj_property>
+      <obj_property name="ObjectShortName">Data_Read</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/ACK_out" type="logic">
+      <obj_property name="ElementShortName">ACK_out</obj_property>
+      <obj_property name="ObjectShortName">ACK_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/TX_RDY" type="logic">
+      <obj_property name="ElementShortName">TX_RDY</obj_property>
+      <obj_property name="ObjectShortName">TX_RDY</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Valid_D" type="logic">
+      <obj_property name="ElementShortName">Valid_D</obj_property>
+      <obj_property name="ObjectShortName">Valid_D</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/TX_Data" type="array">
+      <obj_property name="ElementShortName">TX_Data[7:0]</obj_property>
+      <obj_property name="ObjectShortName">TX_Data[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Address" type="array">
+      <obj_property name="ElementShortName">Address[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Address[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Databus" type="array">
+      <obj_property name="ElementShortName">Databus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Databus[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/DMA_RQ" type="logic">
+      <obj_property name="ElementShortName">DMA_RQ</obj_property>
+      <obj_property name="ObjectShortName">DMA_RQ</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/DMA_ACK" type="logic">
+      <obj_property name="ElementShortName">DMA_ACK</obj_property>
+      <obj_property name="ObjectShortName">DMA_ACK</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Send_comm" type="logic">
+      <obj_property name="ElementShortName">Send_comm</obj_property>
+      <obj_property name="ObjectShortName">Send_comm</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/READY" type="logic">
+      <obj_property name="ElementShortName">READY</obj_property>
+      <obj_property name="ObjectShortName">READY</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Address_reg" type="array">
+      <obj_property name="ElementShortName">Address_reg[2:0]</obj_property>
+      <obj_property name="ObjectShortName">Address_reg[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/byte_count_reg" type="array">
+      <obj_property name="ElementShortName">byte_count_reg[2:0]</obj_property>
+      <obj_property name="ObjectShortName">byte_count_reg[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Databus_tmp" type="array">
+      <obj_property name="ElementShortName">Databus_tmp[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Databus_tmp[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/DMA_PHY/Write_en_tmp" type="logic">
+      <obj_property name="ElementShortName">Write_en_tmp</obj_property>
+      <obj_property name="ObjectShortName">Write_en_tmp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RS232_PHY/TD" type="logic">
+      <obj_property name="ElementShortName">TD</obj_property>
+      <obj_property name="ObjectShortName">TD</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_nexys_PIC/Unit_nexys_PIC/UUT/RS232_PHY/RD" type="logic">
+      <obj_property name="ElementShortName">RD</obj_property>
+      <obj_property name="ObjectShortName">RD</obj_property>
    </wvobject>
 </wave_config>
