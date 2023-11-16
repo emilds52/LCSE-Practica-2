@@ -53,6 +53,16 @@ end ALU;
 --E
 
 architecture behavioral of ALU is
+component sumador is
+port (
+  A : in std_logic_vector(7 downto 0);
+  B : in std_logic_vector(7 downto 0);
+  C : in std_logic;
+  Q : out std_logic_vector(7 downto 0);
+  Co: out std_logic;
+  Z : out std_logic
+);
+end sumador
 
 begin
 
@@ -61,7 +71,7 @@ begin
   if reset = '1' then
   
   elsif rising_edge(clk) then
-  
+    
   end if;
 
 end process;
