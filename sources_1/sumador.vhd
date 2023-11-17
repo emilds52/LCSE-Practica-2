@@ -1,37 +1,53 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use IEEE.std_logic_unsigned.all;
-
-library util;
-USE util.PIC_pkg.all;
 
 entity sumador is
 port (
   A : in std_logic_vector(7 downto 0);
   B : in std_logic_vector(7 downto 0);
-  C : in std_logic;
+  Ci : in std_logic;
   Q : out std_logic_vector(7 downto 0);
   Co: out std_logic;
   Z : out std_logic
 );
 end sumador;
 
-architecture behavioral of sumador is 
+architecture structural of sumador is 
 
---signal A_uns : unsigned(A'range);
---signal B_uns : unsigned(B'range);
-
---signal Q_aux : std_logic_vector(8 downto 0);
+  component full_adder is
+  port(
+    A : in std_logic;
+    B : in std_logic;
+    Cin : in std_logic;
+    Sum : out std_logic;
+    Cout: out std_logic
+  );
+  end component;
+  
+  signal B_aux     : std_logic_vector(7 downto 0);
+  signal Carry_aux : std_logic_vector(8 downto 0);
+  signal Q_aux     : std_logic_vector(7 downto 0);
 
 begin
---A_uns <= unsigned(A);
---B_uns <= unsigned(B);
 
---Q_aux <= std_logic_vector(A + B + C);
---Q <= Q_aux(7 downto 0);
---Co <= Q_aux(8);
---Z <= not ( Q_aux(7) or Q_aux(6) or Q_aux(5) or Q_aux(4) or Q_aux(3) or Q_aux(2) or Q_aux(1) or Q_aux(0));
+  B_aux <= B when Ci = '0' else not B;
+  Carry_aux(0) <= Ci;
+  
 
+  Full_adders_gen : for i in 0 to 7 generate
+  begin
+    FA_i_INST: Full_adder
+      port map (
+        A      => A(i),
+        B      => B_aux(i),
+        Cin    => Carry_aux(i),
+        Sum    => Q_aux(i),
+        Cout   => Carry_aux(i+1) 
+        );
+  end generate;
+  
+  Co <= Carry_aux(8);
+  Z <= not( Q_aux(7) or Q_aux(6) or Q_aux(5) or Q_aux(4) or Q_aux(3) or Q_aux(2) or Q_aux(1) or Q_aux(0));
+  Q <= Q_aux;
 
 end architecture;
