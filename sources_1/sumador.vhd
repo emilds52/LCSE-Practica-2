@@ -19,19 +19,19 @@ end sumador;
 
 architecture behavioral of sumador is 
 
-signal A_uns : unsigned(A'range);
-signal B_uns : unsigned(B'range);
+--signal A_uns : unsigned(A'range);
+--signal B_uns : unsigned(B'range);
 
-signal Q_aux : std_logic_vector(Q'length + 1 downto 0);
+--signal Q_aux : std_logic_vector(8 downto 0);
 
 begin
-A_uns <= unsigned(A);
-B_uns <= unsigned(B);
+--A_uns <= unsigned(A);
+--B_uns <= unsigned(B);
 
-Q_aux <= std_logic_vector( A_uns + B_uns ) + C;
-Q <= Q_aux(7 downto 0);
-Co <= Q_aux(8);
-Z <= not ( Q_aux(7) or Q_aux(6) or Q_aux(5) or Q_aux(4) or Q_aux(3) or Q_aux(2) or Q_aux(1) or Q_aux(0));
+--Q_aux <= std_logic_vector(A + B + C);
+--Q <= Q_aux(7 downto 0);
+--Co <= Q_aux(8);
+--Z <= not ( Q_aux(7) or Q_aux(6) or Q_aux(5) or Q_aux(4) or Q_aux(3) or Q_aux(2) or Q_aux(1) or Q_aux(0));
 
 
 end architecture;
