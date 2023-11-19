@@ -93,8 +93,8 @@ architecture behavioral of ALU is
   signal FlagE_reg : std_logic;
   signal FlagE_tmp : std_logic;
   -- Accumulador:
-  signal Acc_reg : std_logic_vector(7 downto 0);
-  signal Acc_tmp : std_logic_vector(7 downto 0);
+  signal ACC_reg : std_logic_vector(7 downto 0);
+  signal ACC_tmp : std_logic_vector(7 downto 0);
   -- Index
   signal Index_reg : std_logic_vector(7 downto 0);
   signal Index_tmp : std_logic_vector(7 downto 0);
@@ -107,8 +107,7 @@ architecture behavioral of ALU is
   
   -- --------------- Señales Internas -----------------
 
-  signal ALU_oe : std_logic;
-  signal Databus_tmp : std_logic_vector(7 downto 0);
+  signal ACC_oe : std_logic;
 
   -- Sumador
   signal A_sum  : std_logic_vector(7 downto 0);
@@ -154,32 +153,20 @@ begin
     E => E_B2A
   );
 
-  -- Para referencia:
-  -- TYPE alu_op IS (
-  --   nop,                                  -- no operation
-  --   op_lda, op_ldb, op_ldacc, op_ldid,    -- external value load
-  --   op_mvacc2id, op_mvacc2a, op_mvacc2b,  -- internal load
-  --   op_add, op_sub, op_shiftl, op_shiftr, -- arithmetic operations
-  --   op_and, op_or, op_xor,                -- logic operations
-  --   op_cmpe, op_cmpl, op_cmpg,            -- compare operations
-  --   op_ascii2bin, op_bin2ascii,           -- conversion operations
-  --   op_oeacc);                            -- output enable
-
   comb_core : process(u_instruction, A_reg, B_reg, ACC_reg)
   begin
     -- Señales por defecto
     -- Registros
-    FlagZ_tmp <= FlagZ_reg;
-    FlagC_tmp <= FlagC_reg;
-    FlagN_tmp <= FlagN_reg;
-    FlagE_tmp <= FlagE_reg;
-    ACC_tmp   <= Acc_reg;
+    FlagZ_tmp <= '0';
+    FlagC_tmp <= '0';
+    FlagN_tmp <= '0';
+    FlagE_tmp <= '0';
+    ACC_tmp   <= ACC_reg;
     Index_tmp <= Index_reg;
     A_tmp     <= A_reg;
     B_tmp     <= B_reg;
     -- Señales internas
-    ALU_oe <= '0';
-    Databus_tmp <= (others => '0');
+    ACC_oe <= '0';
     A_sum <= (others => '0');
     B_sum <= (others => '0');
     C_sum <= '0'; -- Sumar por defecto
@@ -193,50 +180,104 @@ begin
 
       -- External value load
       when op_lda =>
+        A_tmp <= Databus;
 
       when op_ldb => 
+        B_tmp <= Databus;
       
       when op_ldacc =>
+        ACC_tmp <= Databus;
       
       when op_ldid =>
+        Index_tmp <= Databus;
       
       -- Internal load
       when op_mvacc2id =>
+        Index_tmp <= ACC_reg;
 
       when op_mvacc2a =>
+        A_tmp <= ACC_reg;
 
       when op_mvacc2b =>
+        B_tmp <= ACC_reg;
 
       -- Arithmetic operations
       when op_add =>
+        A_sum     <= A_reg;
+        B_sum     <= B_reg;
+        ACC_tmp   <= Q_sum;
+        FlagZ_tmp <= Z_sum;
+        FlagC_tmp <= Co_sum;
 
       when op_sub =>
+        A_sum     <= A_reg;
+        B_sum     <= B_reg;
+        C_sum     <= '1'; -- Restar
+        ACC_tmp   <= Q_sum;
+        FlagZ_tmp <= Z_sum;
+        FlagC_tmp <= Co_sum; -- TODO: Puede que haya que hacer más para detectar overflow
       
       when op_shiftl =>
-      
+        ACC_tmp <= ACC_reg(6 downto 0) & '0';
+
       when op_shiftr =>
+        ACC_tmp <= '0' & ACC_reg(7 downto 1);
 
       -- Logic operations
+      -- Flags?
       when op_and =>
-      
+        for i in 0 to 7 loop
+          ACC_tmp(i) <= A_reg(i) and B_reg(i);
+        end loop;
+        FlagZ_tmp <= not(ACC_tmp(7) or ACC_tmp(6) or ACC_tmp(5) or ACC_tmp(4) or ACC_tmp(3) or ACC_tmp(2) or ACC_tmp(1) or ACC_tmp(0));
+
       when op_or =>
-      
+        for i in 0 to 7 loop
+          ACC_tmp(i) <= A_reg(i) or B_reg(i);
+        end loop;
+        FlagZ_tmp <= not(ACC_tmp(7) or ACC_tmp(6) or ACC_tmp(5) or ACC_tmp(4) or ACC_tmp(3) or ACC_tmp(2) or ACC_tmp(1) or ACC_tmp(0));
+
       when op_xor =>
+        for i in 0 to 7 loop
+          ACC_tmp(i) <= A_reg(i) xor B_reg(i);
+        end loop;
+        FlagZ_tmp <= not(ACC_tmp(7) or ACC_tmp(6) or ACC_tmp(5) or ACC_tmp(4) or ACC_tmp(3) or ACC_tmp(2) or ACC_tmp(1) or ACC_tmp(0));
 
       -- Compare operations
+      -- TODO: POSSIBLE BUG!!! A positive number compared to a negative one can overflow.
+      --       Need to find a way to remedy this, maybe having the adder be an extra bit?
       when op_cmpe =>
-      
+        A_sum     <= A_reg;
+        B_sum     <= B_reg;
+        C_sum     <= '1'; -- Restar
+        FlagZ_tmp <= Z_sum;
+
       when op_cmpl =>
-      
+        A_sum     <= A_reg;
+        B_sum     <= B_reg;
+        C_sum     <= '1'; -- Restar
+        FlagZ_tmp <= Q_sum(7);
+
       when op_cmpg =>
+        A_sum     <= A_reg;
+        B_sum     <= B_reg;
+        C_sum     <= '1'; -- Restar
+        FlagZ_tmp <= not Q_sum(7);
 
       -- Conversion operations
       when op_ascii2bin =>
+        A_A2B     <= A_reg;
+        ACC_tmp   <= Q_A2B;
+        FlagE_tmp <= E_A2B;
       
       when op_bin2ascii =>
+        A_B2A     <= A_reg;
+        ACC_tmp   <= Q_B2A;
+        FlagE_tmp <= E_B2A;
 
       -- Output enable
       when op_oeacc =>
+        ACC_oe <= '1';
     
       -- Others
       when others =>
@@ -263,7 +304,7 @@ begin
       FlagC_reg <= FlagC_tmp;
       FlagN_reg <= FlagN_tmp;
       FlagE_reg <= FlagE_tmp;
-      ACC_reg   <= Acc_tmp;
+      ACC_reg   <= ACC_tmp;
       Index_reg <= Index_tmp;
       A_reg     <= A_tmp;
       B_reg     <= B_tmp;
@@ -276,6 +317,6 @@ begin
   FlagN <= FlagN_reg;
   FlagE <= FlagE_reg;
   Index <= Index_reg;
-  Databus <= Databus_tmp when ALU_oe = '1' else (others <= 'Z');
+  Databus <= ACC_reg when ACC_oe = '1' else (others <= 'Z');
 
 end architecture behavioral;
