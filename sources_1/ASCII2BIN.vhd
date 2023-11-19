@@ -15,16 +15,16 @@ signal Q_temp : std_logic_vector(Q'range);
 begin
   with A select
     Q_temp <=
-      x"00" when "00110000",
-      x"01" when "00110001",
-      x"02" when "00110010",
-      x"03" when "00110011",
-      x"04" when "00110100",
-      x"05" when "00110101",
-      x"06" when "00110110",
-      x"07" when "00110111",
-      x"08" when "00111000",
-      x"09" when "00111001",
+      x"00" when x"30",
+      x"01" when x"31",
+      x"02" when x"32",
+      x"03" when x"33",
+      x"04" when x"34",
+      x"05" when x"35",
+      x"06" when x"36",
+      x"07" when x"37",
+      x"08" when x"38",
+      x"09" when x"39",
       x"FF" when others;
   
   E <= '1' when Q_temp = x"FF" else '0';
