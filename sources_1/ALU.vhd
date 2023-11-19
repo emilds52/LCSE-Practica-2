@@ -7,7 +7,7 @@ USE util.PIC_pkg.all;
 
 entity ALU is
 port (
-  Reset : in std_logic; -- asynnchronous, active low
+  Reset : in std_logic; -- asynchronous, active low
   Clk : in std_logic; -- Sys clock, 20MHz, rising_edge
   u_instruction : in alu_op; -- u-instructions from CPU
   FlagZ : out std_logic; -- Zero flag // Vale '1' si el resultado de la �ltima operaci�n fue cero o la �ltima comparaci�n fue verdadera
@@ -129,7 +129,7 @@ architecture behavioral of ALU is
 
 begin
 
-  Sumador : Sumador 
+  u_Sumador : Sumador 
   port map(
     A  => A_sum,
     B  => B_sum,
@@ -139,14 +139,14 @@ begin
     Z  => Z_sum
   );
 
-  ASCII2BIN : ASCII2BIN
+  u_ASCII2BIN : ASCII2BIN
   port map(
     A => A_A2B,
     Q => Q_A2B,
     E => E_A2B
   );
 
-  BIN2ASCII : BIN2ASCII
+  u_BIN2ASCII : BIN2ASCII
   port map(
     A => A_B2A,
     Q => Q_B2A,
@@ -317,6 +317,6 @@ begin
   FlagN <= FlagN_reg;
   FlagE <= FlagE_reg;
   Index <= Index_reg;
-  Databus <= ACC_reg when ACC_oe = '1' else (others <= 'Z');
+  Databus <= ACC_reg when ACC_oe = '1' else (others => 'Z');
 
 end architecture behavioral;
