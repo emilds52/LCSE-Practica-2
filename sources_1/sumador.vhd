@@ -47,7 +47,7 @@ begin
   end generate;
   
   Co <= Carry_aux(8);
-  Z <= nor(Q_aux)
+  Z <= nor(Q_aux);
   Q <= Q_aux;
 
 end architecture;
