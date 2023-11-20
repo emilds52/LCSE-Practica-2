@@ -56,12 +56,12 @@ architecture behavioral of ALU is
 
   component sumador is
   port (
-    A : in std_logic_vector(7 downto 0);
-    B : in std_logic_vector(7 downto 0);
-    C : in std_logic;
-    Q : out std_logic_vector(7 downto 0);
-    Co: out std_logic;
-    Z : out std_logic
+    A  : in std_logic_vector(7 downto 0);
+    B  : in std_logic_vector(7 downto 0);
+    Ci : in std_logic;
+    Q  : out std_logic_vector(7 downto 0);
+    Co : out std_logic;
+    Z  : out std_logic
   );
   end component;
   
@@ -133,7 +133,7 @@ begin
   port map(
     A  => A_sum,
     B  => B_sum,
-    C  => C_sum,
+    Ci => C_sum,
     Q  => Q_sum,
     Co => Co_sum,
     Z  => Z_sum
@@ -237,8 +237,6 @@ begin
         FlagZ_tmp <= nor(ACC_tmp);
 
       -- Compare operations
-      -- TODO: POSSIBLE BUG!!! A positive number compared to a negative one can overflow.
-      --       Need to find a way to remedy this, maybe having the adder be an extra bit?
       when op_cmpe =>
         FlagZ_tmp <= and(A_reg xnor B_reg); -- A_reg ?= B_reg
 
@@ -252,8 +250,7 @@ begin
           FlagZ_tmp <= Q_sum(7);
         end if;
             
-
-      when op_cmpg => -- FlagZ_tmp >= A_reg ?<= B_reg
+      when op_cmpg => -- FlagZ_tmp <= A_reg ?>= B_reg
         A_sum     <= A_reg;
         B_sum     <= B_reg;
         C_sum     <= '1'; -- Restar
