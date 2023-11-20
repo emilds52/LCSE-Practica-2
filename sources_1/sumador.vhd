@@ -47,7 +47,7 @@ begin
   end generate;
   
   Co <= Carry_aux(8);
-  Z <= not( Q_aux(7) or Q_aux(6) or Q_aux(5) or Q_aux(4) or Q_aux(3) or Q_aux(2) or Q_aux(1) or Q_aux(0));
+  Z <= nor(Q_aux)
   Q <= Q_aux;
 
 end architecture;

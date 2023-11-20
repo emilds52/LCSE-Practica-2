@@ -153,7 +153,7 @@ begin
     E => E_B2A
   );
 
-  comb_core : process(u_instruction, A_reg, B_reg, ACC_reg)
+  comb_core : process(all)
   begin
     -- Señales por defecto
     -- Registros
@@ -224,45 +224,44 @@ begin
         ACC_tmp <= '0' & ACC_reg(7 downto 1);
 
       -- Logic operations
-      -- Flags?
       when op_and =>
-        for i in 0 to 7 loop
-          ACC_tmp(i) <= A_reg(i) and B_reg(i);
-        end loop;
-        FlagZ_tmp <= not(ACC_tmp(7) or ACC_tmp(6) or ACC_tmp(5) or ACC_tmp(4) or ACC_tmp(3) or ACC_tmp(2) or ACC_tmp(1) or ACC_tmp(0));
+        ACC_tmp <= A_reg and B_reg;
+        FlagZ_tmp <= nor(ACC_tmp);
 
       when op_or =>
-        for i in 0 to 7 loop
-          ACC_tmp(i) <= A_reg(i) or B_reg(i);
-        end loop;
-        FlagZ_tmp <= not(ACC_tmp(7) or ACC_tmp(6) or ACC_tmp(5) or ACC_tmp(4) or ACC_tmp(3) or ACC_tmp(2) or ACC_tmp(1) or ACC_tmp(0));
+        ACC_tmp <= A_reg or B_reg;
+        FlagZ_tmp <= nor(ACC_tmp);
 
       when op_xor =>
-        for i in 0 to 7 loop
-          ACC_tmp(i) <= A_reg(i) xor B_reg(i);
-        end loop;
-        FlagZ_tmp <= not(ACC_tmp(7) or ACC_tmp(6) or ACC_tmp(5) or ACC_tmp(4) or ACC_tmp(3) or ACC_tmp(2) or ACC_tmp(1) or ACC_tmp(0));
+        ACC_tmp <= A_reg xor B_reg;
+        FlagZ_tmp <= nor(ACC_tmp);
 
       -- Compare operations
       -- TODO: POSSIBLE BUG!!! A positive number compared to a negative one can overflow.
       --       Need to find a way to remedy this, maybe having the adder be an extra bit?
       when op_cmpe =>
-        A_sum     <= A_reg;
-        B_sum     <= B_reg;
-        C_sum     <= '1'; -- Restar
-        FlagZ_tmp <= Z_sum;
+        FlagZ_tmp <= and(A_reg xnor B_reg); -- A_reg ?= B_reg
 
-      when op_cmpl =>
+      when op_cmpl => -- FlagZ_tmp <= A_reg ?<= B_reg
         A_sum     <= A_reg;
         B_sum     <= B_reg;
         C_sum     <= '1'; -- Restar
-        FlagZ_tmp <= Q_sum(7);
+        if (A_reg(7) xor B_reg(7)) then
+          FlagZ_tmp <= A_reg(7);
+        else
+          FlagZ_tmp <= Q_sum(7);
+        end if;
+            
 
-      when op_cmpg =>
+      when op_cmpg => -- FlagZ_tmp >= A_reg ?<= B_reg
         A_sum     <= A_reg;
         B_sum     <= B_reg;
         C_sum     <= '1'; -- Restar
-        FlagZ_tmp <= not Q_sum(7);
+        if (A_reg(7) xor B_reg(7)) then
+          FlagZ_tmp <= B_reg(7);
+        else
+          FlagZ_tmp <= not Q_sum(7);
+        end if;
 
       -- Conversion operations
       when op_ascii2bin =>
