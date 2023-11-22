@@ -244,7 +244,7 @@ begin
         A_sum     <= A_reg;
         B_sum     <= B_reg;
         C_sum     <= '1'; -- Restar
-        if (A_reg(7) xor B_reg(7)) then
+        if (A_reg(7) xor B_reg(7))='1' then
           FlagZ_tmp <= A_reg(7);
         else
           FlagZ_tmp <= Q_sum(7);
@@ -254,7 +254,7 @@ begin
         A_sum     <= A_reg;
         B_sum     <= B_reg;
         C_sum     <= '1'; -- Restar
-        if (A_reg(7) xor B_reg(7)) then
+        if (A_reg(7) xor B_reg(7))='1' then
           FlagZ_tmp <= B_reg(7);
         else
           FlagZ_tmp <= not Q_sum(7);
@@ -286,7 +286,7 @@ begin
 
   registers : process(clk, reset)
   begin
-    if reset = '1' then
+    if reset = '0' then
       FlagZ_reg <= '0';
       FlagC_reg <= '0';
       FlagN_reg <= '0';

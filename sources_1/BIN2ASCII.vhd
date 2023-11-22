@@ -14,7 +14,7 @@ architecture A of BIN2ASCII is
 signal Q_temp : std_logic_vector(Q'range);
 begin
   with A select
-    Q <=
+    Q_temp <=
       x"30" when x"00",
       x"31" when x"01",
       x"32" when x"02",
@@ -27,5 +27,6 @@ begin
       x"39" when x"09",
       x"FF" when others;
       
+  Q <= Q_temp;
   E <= '1' when Q_temp = x"FF" else '0';
 end architecture;

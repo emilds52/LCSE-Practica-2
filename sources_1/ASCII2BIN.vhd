@@ -27,6 +27,7 @@ begin
       x"09" when x"39",
       x"FF" when others;
   
+  Q <= Q_temp;
   E <= '1' when Q_temp = x"FF" else '0';
       
 end architecture;
