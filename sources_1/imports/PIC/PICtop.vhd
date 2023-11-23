@@ -158,7 +158,7 @@ architecture behavior of PICtop is
   signal DMA_RQ       : STD_LOGIC;
   signal DMA_ACK      : STD_LOGIC;
   signal Send_comm    : STD_LOGIC;
-  signal DMA_READY        : STD_LOGIC;
+  signal DMA_READY    : STD_LOGIC;
 
   signal write_en_mem, oe_mem : STD_LOGIC;
   signal address_mem  : STD_LOGIC_VECTOR(7 downto 0);
