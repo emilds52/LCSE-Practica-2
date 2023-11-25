@@ -54,7 +54,7 @@ architecture TestBench of ALU_tb is
     -- Reset & clock generator
     -----------------------------------------------------------------------------
     
-      Reset <= '0', '1' after 5*T_CLK;
+      Reset <= '0', '1' after T_CLK;
       
       p_clk : PROCESS
       BEGIN
@@ -64,82 +64,229 @@ architecture TestBench of ALU_tb is
       
       Databus <= Databus_tb when u_instruction /= op_oeacc else (others=> 'Z');
       
+      --simulation time: 810 ns
       SEND_STUFF : process
       begin
+        wait for 3*T_CLK;
       --Carga de registros
         Databus_tb <= x"AA";
-        wait for 4*T_CLK;
-        u_instruction <= op_oeacc;
-        wait for 4*T_CLK;
         u_instruction <= op_ldacc;
-        wait for 4*T_CLK;
+        wait for T_CLK;
+        Databus_tb <= x"98";
         u_instruction <= op_lda;
-        wait for 4*T_CLK;
-        u_instruction <= op_oeacc;
-        wait for 4*T_CLK;
-        Databus_tb <= x"55";
-        wait for 4*T_CLK;
+        wait for T_CLK;
         u_instruction <= op_ldb;
-        wait for 4*T_CLK;
+        Databus_tb <= x"55";
+        wait for T_CLK;
         Databus_tb <= x"88";
-        wait for 4*T_CLK;
         u_instruction <= op_ldacc;
-        wait for 4*T_CLK;
+        wait for T_CLK;
         Databus_tb <= x"11";
-        wait for 4*T_CLK;
         u_instruction <= op_ldid;
-        wait for 4*T_CLK;
-        Databus_tb <= (others => 'Z');
+        wait for T_CLK;
+
         --Operaciones
-        u_instruction <= op_shiftl;
-        wait for 4*T_CLK;
-        u_instruction <= op_shiftr;
-        wait for 4*T_CLK;
-        u_instruction <= op_oeacc;
-        wait for 4*T_CLK;
-        u_instruction <= op_add;
-        wait for 4*T_CLK;
-        u_instruction <= op_sub;
-        wait for 4*T_CLK;
-        u_instruction <= op_and;
-        wait for 4*T_CLK;
-        u_instruction <= op_or;
-        wait for 4*T_CLK;
-        u_instruction <= op_xor;
-        wait for 4*T_CLK;
+        
+        --SHIFT x"11"
+        u_instruction <= op_shiftl; --output: x"22"
+        wait for T_CLK;
+        u_instruction <= op_shiftr;--output: x"11"
+        wait for T_CLK;
+        
+        Databus_tb <= "00110111";
+        u_instruction <= op_lda;
+        wait for T_CLK;
+        Databus_tb <= "01110001";
+        u_instruction <= op_ldb;
+        wait for T_CLK;
+        
+        --Logic
+        u_instruction <= op_and;--output: "00110001", x"31"
+        wait for T_CLK;
+        u_instruction <= op_or;--output: "01110111", x"77"
+        wait for T_CLK;
+        u_instruction <= op_xor;--output: "01000110", x"46"
+        wait for T_CLK;
+        
+        Databus_tb <= "11100110";-- n: -26
+        u_instruction <= op_lda;
+        wait for T_CLK;
+        Databus_tb <= "01001101";-- n: +77
+        u_instruction <= op_ldb;
+        wait for T_CLK;
+        
+        --Arithmetic
+        u_instruction <= op_add;-- output: 51, x"33"
+        wait for T_CLK;
+        u_instruction <= op_sub;-- output: -103, x"99"
+        wait for T_CLK;
+
+        Databus_tb <= x"37";-- n: 55
+        u_instruction <= op_lda;
+        wait for T_CLK;
+        Databus_tb <= x"19";-- n: 25
+        u_instruction <= op_ldb;
+        wait for T_CLK;
+        
+        --Arithmetic
+        u_instruction <= op_add;-- output: 80, x"50"
+        wait for T_CLK;
+        u_instruction <= op_sub;-- output: 30, x"1E"
+        wait for T_CLK;
+        
+        --Comparation (55, 25) CMPG
         u_instruction <= op_cmpe;
-        wait for 4*T_CLK;
+        wait for T_CLK;
         u_instruction <= op_cmpl;
-        wait for 4*T_CLK;
+        wait for T_CLK;
         u_instruction <= op_cmpg;
-        wait for 4*T_CLK;
-        u_instruction <= op_xor;
-        wait for 4*T_CLK;
+        wait for T_CLK;  
+        
+        Databus_tb <= x"18";-- n: 24
+        u_instruction <= op_lda;
+        wait for T_CLK;
+        Databus_tb <= x"73";-- n: 115
+        u_instruction <= op_ldb;
+        wait for T_CLK;
+        
+        --Comparation (24, 115) CMPL
         u_instruction <= op_cmpe;
-        wait for 4*T_CLK;
+        wait for T_CLK;
         u_instruction <= op_cmpl;
-        wait for 4*T_CLK;  
+        wait for T_CLK;
+        u_instruction <= op_cmpg;
+        wait for T_CLK; 
         
-        --ASCII  
+        Databus_tb <= x"23";-- n: 35
+        u_instruction <= op_lda;
+        wait for T_CLK;
+        Databus_tb <= x"23";-- n: 35
+        u_instruction <= op_ldb;
+        wait for T_CLK;
+        
+        --Comparation (35, 35) CMPE
+        u_instruction <= op_cmpe;
+        wait for T_CLK;
+        u_instruction <= op_cmpl;
+        wait for T_CLK;
+        u_instruction <= op_cmpg;
+        wait for T_CLK; 
+
+        --ASCII2BIN
         u_instruction <= op_ascii2bin;
-        wait for 4*T_CLK;
+        wait for T_CLK;
+        Databus_tb <= x"00";
+        u_instruction <= op_lda;
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"31";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"32";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"33";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"34";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"35";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"36";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"37";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"38";
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
+        u_instruction <= op_lda;
         Databus_tb <= x"39";
-        wait for 4*T_CLK;
-        Databus_tb <= x"09";
-        wait for 4*T_CLK;
-        u_instruction <= op_bin2ascii;
-        wait for 4*T_CLK;
-        Databus_tb <= x"0A";
-        wait for 4*T_CLK;
+        wait for T_CLK;
+        u_instruction <= op_ascii2bin;
+        wait for T_CLK;
         
-        Databus_tb <= (others => 'Z');
+        --BIN2ASCII
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        Databus_tb <= x"00";
+        u_instruction <= op_lda;
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"01";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"02";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"03";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"04";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"05";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"06";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"07";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"08";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+        u_instruction <= op_lda;
+        Databus_tb <= x"09";
+        wait for T_CLK;
+        u_instruction <= op_bin2ascii;
+        wait for T_CLK;
+
         --mv
         u_instruction <= op_mvacc2id;
-        wait for 4*T_CLK;
+        wait for T_CLK;
         u_instruction <= op_mvacc2a;
-        wait for 4*T_CLK;
+        wait for T_CLK;
         u_instruction <= op_mvacc2b;
-        wait for 4*T_CLK;
+        wait for T_CLK;
         wait;
       end process;
       

@@ -69,11 +69,11 @@ begin  -- TestBench
   begin
     RS232_RX <= '1';
     wait for 40 us;
-    Transmit(RS232_RX, X"49");
+    Transmit(RS232_RX, X"54");
     wait for 40 us;
-    Transmit(RS232_RX, X"34");
+    Transmit(RS232_RX, X"10");
     wait for 40 us;
-    Transmit(RS232_RX, X"31");
+    Transmit(RS232_RX, X"04");
     wait for 1 us;
     Transmit(RS232_RX, X"88");
     wait for 40 us;

@@ -56,12 +56,12 @@ architecture behavioral of ALU is
 
   component sumador is
   port (
-    A          : in std_logic_vector(7 downto 0);
-    B          : in std_logic_vector(7 downto 0);
-    subract_en : in std_logic;
-    Q          : out std_logic_vector(7 downto 0);
-    Co         : out std_logic;
-    Z          : out std_logic
+    A           : in std_logic_vector(7 downto 0);
+    B           : in std_logic_vector(7 downto 0);
+    subtract_en : in std_logic;
+    Q           : out std_logic_vector(7 downto 0);
+    Co          : out std_logic;
+    Z           : out std_logic
   );
   end component;
   
@@ -112,7 +112,7 @@ architecture behavioral of ALU is
   -- Sumador
   signal A_sum      : std_logic_vector(7 downto 0);
   signal B_sum      : std_logic_vector(7 downto 0);
-  signal subract_en : std_logic;
+  signal subtract_en : std_logic;
   signal Q_sum      : std_logic_vector(7 downto 0);
   signal Co_sum     : std_logic;
   signal Z_sum      : std_logic;
@@ -131,12 +131,12 @@ begin
 
   u_Sumador : Sumador 
   port map(
-    A          => A_sum,
-    B          => B_sum,
-    subract_en => subract_en,
-    Q          => Q_sum,
-    Co         => Co_sum,
-    Z          => Z_sum
+    A           => A_sum,
+    B           => B_sum,
+    subtract_en => subtract_en,
+    Q           => Q_sum,
+    Co          => Co_sum,
+    Z           => Z_sum
   );
 
   u_ASCII2BIN : ASCII2BIN
@@ -169,7 +169,7 @@ begin
     ACC_oe     <= '0';
     A_sum      <= (others => '0');
     B_sum      <= (others => '0');
-    subract_en <= '0'; -- Sumar por defecto
+    subtract_en <= '0'; -- Sumar por defecto
     A_A2B      <= (others => '0');
     A_B2A      <= (others => '0');
 
@@ -212,7 +212,7 @@ begin
       when op_sub =>
         A_sum      <= A_reg;
         B_sum      <= B_reg;
-        subract_en <= '1'; -- Restar
+        subtract_en <= '1'; -- Restar
         ACC_tmp    <= Q_sum;
         FlagZ_tmp  <= Z_sum;
         FlagC_tmp  <= Co_sum; -- TODO: Puede que haya que hacer más para detectar overflow
@@ -241,16 +241,16 @@ begin
         FlagZ_tmp <= and(A_reg xnor B_reg); -- A_reg ?= B_reg
 
       when op_cmpl => -- FlagZ_tmp <= A_reg ?<= B_reg
-        A_sum      <= A_reg;
-        B_sum      <= B_reg;
-        subract_en <= '1'; -- Restar
-        FlagZ_tmp  <= Co_sum;
+        A_sum       <= A_reg;
+        B_sum       <= B_reg;
+        subtract_en <= '1'; -- Restar
+        FlagZ_tmp   <= Co_sum;
             
       when op_cmpg => -- FlagZ_tmp <= A_reg ?>= B_reg
-        A_sum      <= A_reg;
-        B_sum      <= B_reg;
-        subract_en <= '1'; -- Restar
-        FlagZ_tmp  <= (not Co_sum) and not Z_sum; -- Look for positive sign unless output was 0
+        A_sum       <= A_reg;
+        B_sum       <= B_reg;
+        subtract_en <= '1'; -- Restar
+        FlagZ_tmp   <= (not Co_sum) and not Z_sum; -- Look for positive sign unless output was 0
 
       -- Conversion operations
       when op_ascii2bin =>

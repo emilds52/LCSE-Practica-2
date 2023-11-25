@@ -3,12 +3,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity sumador is
 port (
-  A          : in std_logic_vector(7 downto 0);
-  B          : in std_logic_vector(7 downto 0);
-  subract_en : in std_logic;
-  Q          : out std_logic_vector(7 downto 0);
-  Co         : out std_logic;
-  Z          : out std_logic
+  A           : in std_logic_vector(7 downto 0);
+  B           : in std_logic_vector(7 downto 0);
+  subtract_en : in std_logic;
+  Q           : out std_logic_vector(7 downto 0);
+  Co          : out std_logic;
+  Z           : out std_logic
 );
 end sumador;
 
@@ -31,8 +31,8 @@ architecture structural of sumador is
 
 begin
   A_aux <= '0' & A;
-  B_aux <= '0' & B when subract_en = '0' else ('1' & not B);
-  Carry_aux(0) <= subract_en;
+  B_aux <= '0' & B when subtract_en = '0' else ('1' & not B);
+  Carry_aux(0) <= subtract_en;
 
   Full_adders_gen : for i in 0 to 8 generate
   begin
