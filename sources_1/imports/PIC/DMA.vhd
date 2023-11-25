@@ -50,7 +50,8 @@ signal byte_count_reg: unsigned(2 downto 0); --solo se utiliza hasta x"03"
 signal Databus_tmp: std_logic_vector(7 downto 0);
 signal Write_en_tmp: std_logic;
 
-signal send_comm_reg : std_logic;
+signal READY_cond_send_comm : boolean;
+signal READY_cond_not_idle : boolean;
 
 begin
 
@@ -139,18 +140,11 @@ begin
   DMA_RQ    <= '1' when current_state_reg = request or
                         current_state_reg = writing or
                         current_state_reg = write_ff else '0';
-  READY     <= '0' when (current_state_reg = idle and send_comm = '1' and send_comm_reg= '0') or
-                        current_state_reg /= idle and (not(current_state_reg = transmision and Address_reg = 5)) else '1';
+  READY     <= '0' when READY_cond_send_comm or READY_cond_not_idle else '1';
 
+  READY_cond_send_comm <= (current_state_reg = idle and send_comm = '1');
+  READY_cond_not_idle  <= current_state_reg /= idle and (not(current_state_reg = transmision and Address_reg = 5));
 
-  send_comm_proc : process( clk, Reset )
-  begin
-    if Reset = '0' then
-      send_comm_reg <= '0';
-    elsif rising_edge(clk) then
-      send_comm_reg <= send_comm;
-    end if;
-  end process ; -- send_comm_proc
 END behavior;
 
 
