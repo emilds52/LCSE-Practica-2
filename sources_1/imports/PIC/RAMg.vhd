@@ -30,13 +30,13 @@ CS_RAMg <= '1' when (address(7) or address(6))='1' else '0';
 p_ram : process (clk)  -- no reset
 begin
   if clk'event and clk = '1' then
-    if write_en = '1' and CS_RAMg = '1' then
+    if write_en = '1' and (address(7) or address(6))='1' then
       contents_ram(to_integer(unsigned(address))) <= databus;
     end if;
   end if;
 end process;
 
-databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and CS_RAMg = '1' else (others => 'Z');
+databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and (address(7) or address(6))='1' else (others => 'Z');
 
 END behavior;
 

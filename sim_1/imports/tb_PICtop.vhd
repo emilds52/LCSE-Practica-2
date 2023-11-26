@@ -36,6 +36,7 @@ architecture TestBench of PICtop_tb is
   signal Temp_L     : std_logic_vector(6 downto 0);
   signal Temp_H     : std_logic_vector(6 downto 0);
 
+  constant wait_transmit : time := 1 us;
 begin  -- TestBench
 
   UUT: PICtop
@@ -69,18 +70,51 @@ begin  -- TestBench
   begin
     RS232_RX <= '1';
     wait for 40 us;
-    Transmit(RS232_RX, X"54");
-    wait for 40 us;
-    Transmit(RS232_RX, X"10");
-    wait for 40 us;
-    Transmit(RS232_RX, X"04");
-    wait for 1 us;
-    Transmit(RS232_RX, X"88");
-    wait for 40 us;
-    Transmit(RS232_RX, X"55");
-    wait for 40 us;
-    Transmit(RS232_RX, X"FF");
-    wait for 1 us;
+    
+    --Escribir 18 en temperatura
+    Transmit(RS232_RX, X"54");--T
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"31"); --1
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"38");--8
+    wait for wait_transmit;
+   
+    --escribir 1 en switches
+    for i in 48 to 55 loop
+      Transmit(RS232_RX, X"49");--I
+      wait for wait_transmit;
+      Transmit(RS232_RX, std_logic_vector(to_unsigned(i,8)));--i
+      wait for wait_transmit;
+      Transmit(RS232_RX, X"31");--1
+      wait for wait_transmit;
+    end loop;
+    
+    --escribir 0 en switches
+    for j in 0 to 7 loop
+      Transmit(RS232_RX, X"49");--I
+      wait for wait_transmit;
+      Transmit(RS232_RX, std_logic_vector(to_unsigned(55 - j,8)));--j
+      wait for wait_transmit;
+      Transmit(RS232_RX, X"30");--0
+      wait for wait_transmit;
+    end loop;
+    
+    --Escribir 8 en actuador 1 --address 33
+    Transmit(RS232_RX, X"41");--A
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"31"); --1
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"38");--8
+    wait for wait_transmit;
+
+    --Solicitar valor actuador 8
+    Transmit(RS232_RX, X"53");--S
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"41"); --A
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"31");--8
+    wait for wait_transmit;
+    
     wait;
   end process SEND_STUFF;
 

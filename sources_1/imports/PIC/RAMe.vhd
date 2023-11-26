@@ -28,7 +28,7 @@ ARCHITECTURE behavior OF RAMe IS
 
 BEGIN
 
-CS_RAMe <= '1' when (address(7) or address(6))= '0' else '0';
+CS_RAMe <= '0' when (address(7) or address(6))= '1' else '1';
 
 -------------------------------------------------------------------------
 -- Memoria de prop�sito general
@@ -38,13 +38,13 @@ begin
   if Reset = '0' then
     contents_ram <= reset_values;
   elsif clk'event and clk = '1' then
-    if write_en = '1' and CS_RAMe = '1' then
+    if write_en = '1' and (address(7) or address(6))= '0' then
       contents_ram(to_integer(unsigned(address))) <= databus;
     end if;
   end if;
 end process;
 
-databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and CS_RAMe = '1' else (others => 'Z');
+databus <= contents_ram(to_integer(unsigned(address))) when oe = '0' and (address(7) or address(6))= '0' else (others => 'Z');
 -------------------------------------------------------------------------
 
 -------------------------------------------------------------------------
