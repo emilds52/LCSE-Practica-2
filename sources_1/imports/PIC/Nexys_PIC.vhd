@@ -100,8 +100,8 @@ begin
      RD <= JA(2);   -- INPUT PORT
 
 -- 3b.conexión de las lineas TD y RD PC mediante el puerto microUSB (puerto serie RS232)
---     UART_RXD_OUT <= TD;
---     RD <= UART_TXD_IN;
+     UART_RXD_OUT <= TD;
+     RD <= UART_TXD_IN;
 
 -- 4.Displays: Muestra el valor de la temperatura en los dos displays inferiores, y anula los otros 6. 
     CA <= not(temp_H(0)) when contador(16)='1' else not(temp_L(0));
