@@ -18,11 +18,8 @@ END ramg;
 ARCHITECTURE behavior OF ramg IS
 
   SIGNAL contents_ram : array8_ram(255 downto 64);
-  signal CS_RAMg      : std_logic;
 
 BEGIN
-
-CS_RAMg <= '1' when (address(7) or address(6))='1' else '0';
 
 -------------------------------------------------------------------------
 -- Memoria de prop�sito general

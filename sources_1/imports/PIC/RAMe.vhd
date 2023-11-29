@@ -22,13 +22,10 @@ END RAMe;
 
 ARCHITECTURE behavior OF RAMe IS
 
-  signal CS_RAMe: std_logic;
   SIGNAL contents_ram : array8_ram(63 downto 0);
   constant reset_values : array8_ram(63 downto 0) := (16#31# => std_logic_vector(to_unsigned(16#22#, 8)), others=>(others=>'0'));--(!!) testbench
 
 BEGIN
-
-CS_RAMe <= '0' when (address(7) or address(6))= '1' else '1';
 
 -------------------------------------------------------------------------
 -- Memoria de prop�sito general
