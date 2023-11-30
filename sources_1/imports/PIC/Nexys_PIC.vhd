@@ -1,6 +1,6 @@
 ------------------------------------------------------
--- Autor: Juan Antonio López Martín
--- Departamento de Ingeniería Electrónica 
+-- Autor: Juan Antonio Lï¿½pez Martï¿½n
+-- Departamento de Ingenierï¿½a Electrï¿½nica 
 ------------------------------------------------------ 
 
 library IEEE;
@@ -11,7 +11,7 @@ entity nexys_PIC is
   port (
     
 	-- Puertos PMOD de usuario (x4)
-	JA 				: inout STD_LOGIC_VECTOR(2 downto 1);    
+	-- JA 				: inout STD_LOGIC_VECTOR(2 downto 1);    
 	
     --Interfaz USB-RS232
     UART_TXD_IN     : in  STD_LOGIC;
@@ -50,7 +50,7 @@ end nexys_PIC;
 
 architecture a_behavior of nexys_PIC is
 
--- declaración de componentes 
+-- declaraciï¿½n de componentes 
     component clk_wiz_0
         port (
           reset     : in  std_logic;
@@ -72,7 +72,7 @@ architecture a_behavior of nexys_PIC is
   end component;
 
 
--- declaración de señales 
+-- declaraciï¿½n de seï¿½ales 
     signal reset, reset_p : std_logic;
     signal clk : std_logic;
     signal contador : UNSIGNED(31 downto 0); 
@@ -94,12 +94,12 @@ begin
 -- 2.Datos de entrada y salida
      LED(15 downto 8) <= switches; 
 
--- 3a.Realimentación lineas TD => RD  (necesita un cable entre los pines 1 y 2 del pmodJA)
-     JA(1) <= TD;   -- OUTPUT PORT     
-     JA(2) <= 'Z';   -- OUTPUT PORT
-     RD <= JA(2);   -- INPUT PORT
+-- 3a.Realimentaciï¿½n lineas TD => RD  (necesita un cable entre los pines 1 y 2 del pmodJA)
+    --  JA(1) <= TD;   -- OUTPUT PORT     
+    --  JA(2) <= 'Z';   -- OUTPUT PORT
+    --  RD <= JA(2);   -- INPUT PORT
 
--- 3b.conexión de las lineas TD y RD PC mediante el puerto microUSB (puerto serie RS232)
+-- 3b.conexiï¿½n de las lineas TD y RD PC mediante el puerto microUSB (puerto serie RS232)
      UART_RXD_OUT <= TD;
      RD <= UART_TXD_IN;
 
@@ -115,7 +115,7 @@ begin
     AN <= "111111" & not(contador(16)) & (contador(16));
 
 
--- 5.Instanciación de los componentes 
+-- 5.Instanciaciï¿½n de los componentes 
   reset_p <= not reset;
     clk_20MHz : clk_wiz_0 PORT MAP(
         reset => reset_p,
