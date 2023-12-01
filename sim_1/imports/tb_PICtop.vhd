@@ -78,6 +78,14 @@ begin  -- TestBench
     wait for wait_transmit;
     Transmit(RS232_RX, X"38");--8
     wait for wait_transmit;
+    
+    --Escribir 08 en temperatura
+    Transmit(RS232_RX, X"54");--T
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"30"); --0
+    wait for wait_transmit;
+    Transmit(RS232_RX, X"38");--8
+    wait for wait_transmit;
    
     --escribir 1 en switches
     for i in 48 to 55 loop
