@@ -3,6 +3,7 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.all;
 USE IEEE.numeric_std.all;
 library util;
+USE util.utility.all;
 USE util.PIC_pkg.all;
 
 entity PICtop is
@@ -13,8 +14,10 @@ entity PICtop is
     RS232_RX    : in  std_logic;           -- RS232 RX line
     RS232_TX    : out std_logic;           -- RS232 TX line
     switches    : out std_logic_vector(7 downto 0);   -- Switch status bargraph
+    PWM_LEDs    : out std_logic_vector(5 downto 0);   --Tricolor LED PWM values
     Temp_L      : out std_logic_vector(6 downto 0);   -- Display value for TL
-    Temp_H      : out std_logic_vector(6 downto 0));  -- Display value for TH
+    Temp_H      : out std_logic_vector(6 downto 0)
+    );  -- Display value for TH
 end PICtop;
 
 
@@ -55,6 +58,7 @@ architecture behavior of PICtop is
       address  : in    std_logic_vector(7 downto 0);
       databus  : inout std_logic_vector(7 downto 0);
       Switches : out   std_logic_vector(7 downto 0);
+      Actuators: out   array_of_std4_t(5 downto 0);
       Temp_L   : out   std_logic_vector(6 downto 0);
       Temp_H   : out   std_logic_vector(6 downto 0));
   end component;
@@ -141,6 +145,19 @@ architecture behavior of PICtop is
       Program_counter : in  std_logic_vector(11 downto 0)
     );
   end component;
+  
+  ------------------------------------------------------------------------
+  --  Bloque para generar la señal PWM de cada color del LED
+  ------------------------------------------------------------------------
+  
+  component TricolorLED is
+    port (
+      clk : in std_logic;
+      reset : in std_logic;
+      Actuators : in array_of_std4_t(5 downto 0);
+      PWM_LEDs : out std_logic_vector(5 downto 0)
+    );
+  end component;
 
   -- RS232 y DMA 
   
@@ -179,6 +196,8 @@ architecture behavior of PICtop is
   signal ROM_Addr : std_logic_vector(11 downto 0);
 
   signal Databus : std_logic_vector(7 downto 0);
+  
+  signal actuators:array_of_std4_t(5 downto 0);
 
 begin  -- behavior
 
@@ -209,6 +228,7 @@ begin  -- behavior
       address  => address_mem,
       databus  => databus,
       Switches => switches,
+      Actuators=> actuators,
       Temp_L   => Temp_L,
       Temp_H   => Temp_H 
     );
@@ -281,6 +301,15 @@ begin  -- behavior
   write_en_mem <= Write_en_DMA or Write_en_CPU;
   oe_mem       <= OE_DMA and OE_CPU;
   address_mem  <= Addr_DMA or Addr_CPU;
+  
+  --Tricolor LED PWM generation
+  
+  TricolorLED_PHY: TricolorLED
+    port map(
+    reset => reset,
+    clk => clk,
+    actuators => actuators,
+    PWM_LEDs => PWM_LEDs);
 
 end behavior;
 

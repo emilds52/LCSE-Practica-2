@@ -4,6 +4,7 @@ USE IEEE.std_logic_1164.all;
 USE IEEE.numeric_std.all;
 
 library util;
+USE util.utility.all;
 USE util.PIC_pkg.all;
 
 ENTITY RAMe IS
@@ -15,6 +16,7 @@ PORT (
    address  : in    std_logic_vector(7 downto 0);
    databus  : inout std_logic_vector(7 downto 0);
    Switches : out   std_logic_vector(7 downto 0);
+   Actuators: out   array_of_std4_t(5 downto 0);
    Temp_H   : out   std_logic_vector(6 downto 0);
    Temp_L   : out   std_logic_vector(6 downto 0)
    );
@@ -24,7 +26,7 @@ ARCHITECTURE behavior OF RAMe IS
 
   SIGNAL contents_ram : array8_ram(63 downto 0);
   constant reset_values : array8_ram(63 downto 0) := (16#31# => std_logic_vector(to_unsigned(16#22#, 8)), others=>(others=>'0'));--(!!) testbench
-
+  signal actuators_aux : std_logic_vector(7 downto 0);
 BEGIN
 
 -------------------------------------------------------------------------
@@ -79,6 +81,11 @@ Temp_L <=
 Switches_loop : for i in 0 to 7 generate
   Switches(i) <= contents_ram(16#10# + i)(0);
 end generate Switches_loop;
+
+Actuators_loop : for i in 0 to 5 generate
+  Actuators(i) <= contents_ram(16#20# + i)(3 downto 0);
+  --Actuators(i) <= actuators_aux(3 downto 0);
+end generate Actuators_loop;
 
 END behavior;
 

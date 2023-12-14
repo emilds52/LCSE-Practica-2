@@ -40,7 +40,15 @@ entity nexys_PIC is
 
 -- Interruptores (x16) y LEDs
     SW                 : in   STD_LOGIC_VECTOR(15 downto 0);    
-    LED                : out  STD_LOGIC_VECTOR(15 downto 0);   
+    LED                : out  STD_LOGIC_VECTOR(15 downto 0); 
+    
+-- LED tricolor
+    LED16_B            : out std_logic;  
+    LED16_G            : out std_logic; 
+    LED16_R            : out std_logic;
+    LED17_B            : out std_logic;  
+    LED17_G            : out std_logic; 
+    LED17_R            : out std_logic;  
 
 -- Reloj de la FPGA
     CLK100MHZ        : in   STD_LOGIC
@@ -67,6 +75,7 @@ architecture a_behavior of nexys_PIC is
     RS232_RX    : in  std_logic;           -- RS232 RX line
     RS232_TX    : out std_logic;           -- RS232 TX line
     switches    : out std_logic_vector(7 downto 0);   -- Switch status bargraph
+    PWM_LEDs   : out std_logic_vector(5 downto 0);   --Tricolor LED PWM
     Temp_L      : out std_logic_vector(6 downto 0);   -- Display value for TL
     Temp_H      : out std_logic_vector(6 downto 0));  -- Display value for TH
   end component;
@@ -80,8 +89,10 @@ architecture a_behavior of nexys_PIC is
 
 -- signals for UUT (PICtop) 
     signal switches  : std_logic_vector(7 downto 0); 
+    signal actuators : std_logic_vector(5 downto 0); 
     signal RD, TD  : std_logic;  
     signal Temp_H, Temp_L     : std_logic_vector(6 downto 0);
+    signal PWM_LEDs : std_logic_vector(5 downto 0);
 
 begin
 
@@ -92,7 +103,13 @@ begin
 --     i_send <= BTNC;          -- Button CENTER => Send RAM positions 4-5
 
 -- 2.Datos de entrada y salida
-     LED(15 downto 8) <= switches; 
+      LED(15 downto 8) <= switches; 
+      LED16_B <= PWM_LEDs(0); 
+      LED16_G <= PWM_LEDs(1);
+      LED16_R <= PWM_LEDs(2);  
+      LED17_B <= PWM_LEDs(3);  
+      LED17_G <= PWM_LEDs(4);
+      LED17_R <= PWM_LEDs(5);        
 
 -- 3a.Realimentaci�n lineas TD => RD  (necesita un cable entre los pines 1 y 2 del pmodJA)
     --  JA(1) <= TD;   -- OUTPUT PORT     
@@ -129,6 +146,7 @@ begin
         RS232_RX   => RD,
         RS232_TX   => TD,
         switches   => switches,
+        PWM_LEDs   => PWM_LEDs,
         Temp_L     => Temp_L,
         Temp_H     => Temp_H );
 

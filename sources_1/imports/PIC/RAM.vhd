@@ -4,6 +4,7 @@ USE IEEE.std_logic_1164.all;
 USE IEEE.numeric_std.all;
 
 library util;
+use util.utility.all;
 USE util.PIC_pkg.all;
 
 ENTITY ram IS
@@ -15,6 +16,7 @@ PORT (
    address  : in    std_logic_vector(7 downto 0);
    databus  : inout std_logic_vector(7 downto 0);
    Switches : out   std_logic_vector(7 downto 0);
+   Actuators: out   array_of_std4_t(5 downto 0);
    Temp_H   : out   std_logic_vector(6 downto 0);
    Temp_L   : out   std_logic_vector(6 downto 0)
 );
@@ -31,6 +33,7 @@ ARCHITECTURE behavior OF ram IS
       address  : in    std_logic_vector(7 downto 0);
       databus  : inout std_logic_vector(7 downto 0);
       Switches : out   std_logic_vector(7 downto 0);
+      Actuators: out   array_of_std4_t(5 downto 0);
       Temp_H   : out   std_logic_vector(6 downto 0);
       Temp_L   : out   std_logic_vector(6 downto 0)
     );
@@ -57,6 +60,7 @@ BEGIN
     address  => address  ,
     databus  => databus  ,
     Switches => Switches , 
+    Actuators=> Actuators,
     Temp_H   => Temp_H   ,
     Temp_L   => Temp_L
   );
