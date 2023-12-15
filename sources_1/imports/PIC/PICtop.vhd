@@ -197,7 +197,7 @@ architecture behavior of PICtop is
 
   signal Databus : std_logic_vector(7 downto 0);
   
-  signal actuators:array_of_std4_t(5 downto 0);
+  signal actuators : array_of_std4_t(5 downto 0); --array of std_logic_vector(3 downto 0) --Each Actuator has 4 bits of resolution (0-9) 
 
 begin  -- behavior
 
