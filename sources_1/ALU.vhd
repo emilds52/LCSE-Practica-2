@@ -158,9 +158,9 @@ begin
     -- Señales por defecto
     -- Registros
     FlagZ_tmp <= FlagZ_reg;
-    FlagC_tmp <= FlagZ_reg;
-    FlagN_tmp <= FlagZ_reg;
-    FlagE_tmp <= FlagZ_reg;
+    FlagC_tmp <= FlagC_reg;
+    FlagN_tmp <= FlagN_reg;
+    FlagE_tmp <= FlagE_reg;
     ACC_tmp   <= ACC_reg;
     Index_tmp <= Index_reg;
     A_tmp     <= A_reg;
