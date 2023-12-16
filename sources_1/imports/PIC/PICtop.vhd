@@ -2,6 +2,7 @@
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.all;
 USE IEEE.numeric_std.all;
+
 library util;
 USE util.utility.all;
 USE util.PIC_pkg.all;
@@ -14,10 +15,10 @@ entity PICtop is
     RS232_RX    : in  std_logic;           -- RS232 RX line
     RS232_TX    : out std_logic;           -- RS232 TX line
     switches    : out std_logic_vector(7 downto 0);   -- Switch status bargraph
-    PWM_LEDs    : out std_logic_vector(5 downto 0);   --Tricolor LED PWM values
+    PWM_LEDs    : out std_logic_vector(5 downto 0);   -- Tricolor LED PWM values
     Temp_L      : out std_logic_vector(6 downto 0);   -- Display value for TL
-    Temp_H      : out std_logic_vector(6 downto 0)
-    );  -- Display value for TH
+    Temp_H      : out std_logic_vector(6 downto 0)    -- Display value for TH
+    );  
 end PICtop;
 
 
