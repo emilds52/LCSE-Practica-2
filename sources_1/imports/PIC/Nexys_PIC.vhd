@@ -39,7 +39,7 @@ entity nexys_PIC is
 --    BTND             : in  STD_LOGIC;    
 
 -- Interruptores (x16) y LEDs
-    SW                 : in   STD_LOGIC_VECTOR(15 downto 0);    
+--    SW                 : in   STD_LOGIC_VECTOR(15 downto 0);    
     LED                : out  STD_LOGIC_VECTOR(15 downto 0); 
     
 -- LED tricolor
